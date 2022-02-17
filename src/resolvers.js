@@ -1,15 +1,13 @@
-const users = [
-  {id: 1, name: 'John', email: 'teste'},
-  {id: 2, name: 'John2', email: 'test2222e'},
-]
+import Users from './models/users';
+
 
 module.exports={
   Query: {
-    users: () => users,
-    user: () => users[0],
+    users:  () =>  Users.findAll(),
+    user:  (_, {id}) =>  Users.findByPk(id),
   },
 
   Mutation: {
-    createUser: () => users[0],
+    createUser: (_,{name, email}) => Users.create({name, email}),
   }
 }
