@@ -2,7 +2,7 @@ import { GraphQLServer } from 'graphql-yoga';
 import path from 'path';
 import db from './db';
 
-import resolvers from './resolvers'
+import resolvers from './resolvers/resolvers'
 
 
 // -- sincroniza o banco de dados
