@@ -11,7 +11,10 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 11,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "plugins": [
     "prettier",
@@ -20,8 +23,8 @@
   ],
   "ignorePatterns": "build",
   "rules": {
-    "simple-import-sort/sort": "warn",
-    "prettier/prettier": ["error", {}, {"usePrettierrc": true}]
+    "prettier/prettier": ["error", {}, {"usePrettierrc": true}],
+    "simple-import-sort/imports": "error",
   }
 
 }
