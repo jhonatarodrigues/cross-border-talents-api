@@ -8,6 +8,7 @@
     "build": "rimraf ./build && tsc"
   },
   "dependencies": {
+    "dotenv": "^16.0.0",
     "graphql-yoga": "^1.18.3",
     "mysql2": "^2.3.3",
     "sequelize": "^6.16.1"

@@ -1,5 +1,5 @@
+import 'dotenv/config'
 import { GraphQLServer } from 'graphql-yoga';
-import path from 'path';
 import db from './db';
 
 import Schema from './graphql/schema';
