@@ -1,21 +1,21 @@
 import {  ITypedef } from 'graphql-tools';
 
-const def: ITypedef = `
+export const TypeDefs: ITypedef = `
   type User {
     id: ID!
     name: String!
     email: String!
+    phone: String!
+    status: Boolean!
   }
-
-  type Query {
-    users: [User!]!
-    user(id: ID): User
-  }
-  
-  type Mutation {
-    createUser(name: String!, email: String!): User
-  }  
 `;
 
+export const Query = `
+  users: [User!]!
+  user(id: ID): User
+`;
 
-export default def;
+export const Mutation = `
+  createUser(name: String!, email: String!, password: String!): User
+`;
+

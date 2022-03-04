@@ -1,7 +1,15 @@
-import Sequelize from 'sequelize';
+import Sequelize, {Model} from 'sequelize';
 import db from '../db';
 
-const Users = db.define('users', {
+class Users extends Model {
+  declare id: string;
+  declare email : string;
+  declare phone: string;
+  declare status: boolean;
+  declare password: string;
+}
+
+Users.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -10,7 +18,12 @@ const Users = db.define('users', {
   },
   name: Sequelize.STRING,
   email: Sequelize.STRING,
-  
+  phone: Sequelize.STRING,
+  status: Sequelize.BOOLEAN,
+  password: Sequelize.STRING,
+},{
+  sequelize: db,
+  modelName: 'users'
 });
 
 export default Users;

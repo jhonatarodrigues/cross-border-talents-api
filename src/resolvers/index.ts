@@ -1,4 +1,5 @@
 import * as User from './users';
+import * as Auth from './auth';
 
 export default {
   Query: {
@@ -6,5 +7,6 @@ export default {
   },
   Mutation: {
     ...User.Mutation,
+    ...Auth.Mutation,
   },
 };

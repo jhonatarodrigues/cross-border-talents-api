@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { GraphQLServer } from 'graphql-yoga';
 import db from './db';
 
-import Schema from './graphql/schema';
+import Schema from './graphql';
 import resolvers from './resolvers';
 
 // -- sincroniza o banco de dados
