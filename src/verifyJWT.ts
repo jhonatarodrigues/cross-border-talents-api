@@ -1,5 +1,5 @@
 import { ContextParameters } from 'graphql-yoga/dist/types';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 interface UserPayload {
   id: string;
@@ -8,8 +8,6 @@ interface UserPayload {
 
 export default ({request}: ContextParameters) => {
   const token = request.get('Authorization')
-
-  console.log('token', token)
 
   if (token) {
     try {
