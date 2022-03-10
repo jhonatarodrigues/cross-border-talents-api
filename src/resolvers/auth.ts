@@ -19,7 +19,7 @@ const Mutation = {
       }
 
       const isValid = await bcrypt.compare(password, user.password);
-      if (!isValid) {
+      if (!isValid) {       
         throw new Error('Incorrect password')
       }
 
@@ -41,7 +41,7 @@ const Mutation = {
         user
       }
     } catch (error: any) {
-      throw new Error(error.message)
+      return error
     }
   },
   refreshToken: async (_: any, { refreshToken }: { refreshToken: string }) => {
@@ -73,7 +73,7 @@ const Mutation = {
         user
       }
     } catch (error: any) {
-      throw new Error(error.message)
+      return error
     }
   },
 };
