@@ -5,8 +5,9 @@ export const TypeDefs: ITypedef = `
     id: ID!
     name: String!
     email: String!
-    phone: String!
+    phone: String
     status: Boolean!
+    accessLevel: Int!
   }
 `;
 

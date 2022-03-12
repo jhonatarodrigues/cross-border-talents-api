@@ -7,6 +7,7 @@ class Users extends Model {
   declare phone: string;
   declare status: boolean;
   declare password: string;
+  declare accessLevel: number;
 }
 
 Users.init({
@@ -21,6 +22,7 @@ Users.init({
   phone: Sequelize.STRING,
   status: Sequelize.BOOLEAN,
   password: Sequelize.STRING,
+  accessLevel: Sequelize.INTEGER,
 },{
   sequelize: db,
   modelName: 'users'

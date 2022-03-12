@@ -7,7 +7,7 @@ interface UserPayload {
 }
 
 export default ({request}: ContextParameters) => {
-  const token = request.get('Authorization')
+  const token = request.get('Authorization')?.replace('Bearer ', '');
 
   if (token) {
     try {
