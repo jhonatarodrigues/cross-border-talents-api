@@ -9,9 +9,11 @@
     "migrate": " sequelize db:migrate"
   },
   "dependencies": {
+    "apollo-errors": "^1.9.0",
     "bcrpyt": "^2.0.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
+    "graphql-middleware-error-handler": "^1.0.1",
     "graphql-shield": "^7.5.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",

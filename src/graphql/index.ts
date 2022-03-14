@@ -19,6 +19,7 @@ const Definition: ITypedef = `
   ${TypeDefs}
   type Query {
     ${Query}
+    
   }
   type Mutation {
     ${Mutation}

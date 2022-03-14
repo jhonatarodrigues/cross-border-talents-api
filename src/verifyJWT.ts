@@ -17,7 +17,6 @@ export default ({request}: ContextParameters) => {
         id,
         email
       }
-      
     } catch (error) {
       return false
     }
