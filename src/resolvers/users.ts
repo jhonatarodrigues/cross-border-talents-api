@@ -17,9 +17,19 @@ const Query = {
 const Mutation = {
   createUser: async (_: any, { name, email, phone, status }: ICreateUser) => {
     // const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await Users.create({ name, email, phone, status });
 
-    return user;
+    try {
+      const verifyUser = await Users.findOne({ where: { email } });
+      if (verifyUser && verifyUser.id) {
+        throw new Error('userExists');
+      }
+
+      const user = await Users.create({ name, email, phone, status });
+
+      return user;
+    } catch (error: any) {
+      return error;
+    }
   },
 };
 
