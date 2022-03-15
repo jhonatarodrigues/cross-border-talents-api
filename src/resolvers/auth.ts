@@ -8,74 +8,73 @@ interface IMutationLogin {
   password: string;
 }
 
-
 const Mutation = {
   login: async (_: any, { email, password }: IMutationLogin) => {
     try {
-      const user = await Users.findOne({ where: { email }});
+      const user = await Users.findOne({ where: { email } });
 
       if (!user) {
-        throw new Error('No user with that email')
+        throw new Error('No user with that email');
       }
 
       const isValid = await bcrypt.compare(password, user.password);
-      if (!isValid) {       
-        throw new Error('Incorrect password')
+      if (!isValid) {
+        throw new Error('Incorrect password');
       }
 
       const token = jsonwebtoken.sign(
-        { id: user.id, email: user.email},
+        { id: user.id, email: user.email },
         String(process.env.JWT_SECRET),
-        { expiresIn: '1d'}
-      )
+        { expiresIn: '1d' },
+      );
 
       const refreshToken = jsonwebtoken.sign(
-        { id: user.id, email: user.email},
+        { id: user.id, email: user.email },
         String(process.env.REFRESH_TOKEN_SECRET),
-        { expiresIn: '7d'}
-      )
+        { expiresIn: '7d' },
+      );
 
       return {
-        token, 
-        refreshToken, 
-        user
-      }
+        token,
+        refreshToken,
+        user,
+      };
     } catch (error: any) {
-      return error
+      return error;
     }
   },
   refreshToken: async (_: any, { refreshToken }: { refreshToken: string }) => {
     try {
       const { id, email } = jsonwebtoken.verify(
         refreshToken,
-        String(process.env.REFRESH_TOKEN_SECRET)
-      ) as { id: string, email: string };
+        String(process.env.REFRESH_TOKEN_SECRET),
+      ) as { id: string; email: string };
 
-      const user = await Users.findOne({ where: { id }});
+      const user = await Users.findOne({ where: { id } });
       if (!user) {
-        throw new Error('No user with that email')
+        throw new Error('No user with that email');
       }
 
       const token = jsonwebtoken.sign(
-        { id: user.id, email: user.email},
+        { id: user.id, email: user.email },
         String(process.env.JWT_SECRET),
-        { expiresIn: '1d'}
-      )
+        { expiresIn: '1d' },
+      );
       const newRefreshToken = jsonwebtoken.sign(
-        { id: user.id, email: user.email},
+        { id: user.id, email: user.email },
         String(process.env.REFRESH_TOKEN_SECRET),
-        { expiresIn: '7d'}
-      )
+        { expiresIn: '7d' },
+      );
 
       return {
-        token, 
+        token,
         refreshToken: newRefreshToken,
-        user
-      }
+        user,
+      };
     } catch (error: any) {
-      return error
+      return error;
     }
   },
 };
 
-export {  Mutation };
+export { Mutation };

@@ -1,6 +1,7 @@
-import { ITypeDefinitions, ITypedef } from 'graphql-tools';
-import * as User from './user';
+import { ITypedef, ITypeDefinitions } from 'graphql-tools';
+
 import * as Auth from './auth';
+import * as User from './user';
 
 const TypeDefs = `
   ${User.TypeDefs}
@@ -9,7 +10,7 @@ const TypeDefs = `
 
 const Query = `
   ${User.Query} 
-`
+`;
 const Mutation = `
   ${User.Mutation}
   ${Auth.Mutation}
@@ -26,7 +27,6 @@ const Definition: ITypedef = `
   }
 `;
 
-
-const typeDefs: ITypeDefinitions = [Definition]
+const typeDefs: ITypeDefinitions = [Definition];
 
 export default typeDefs;

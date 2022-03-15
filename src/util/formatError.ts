@@ -1,5 +1,4 @@
 import { formatError as formatApolloError } from 'apollo-errors';
-
 import { ApolloError } from 'apollo-server-errors';
 
 function formatError(error: any) {

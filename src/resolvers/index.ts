@@ -1,5 +1,5 @@
-import * as User from './users';
 import * as Auth from './auth';
+import * as User from './users';
 
 export default {
   Query: {

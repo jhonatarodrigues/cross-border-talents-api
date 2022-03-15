@@ -1,4 +1,4 @@
-import {  ITypedef } from 'graphql-tools';
+import { ITypedef } from 'graphql-tools';
 
 export const TypeDefs: ITypedef = `
   type User {
@@ -17,6 +17,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createUser(name: String!, email: String!, password: String!): User
+  createUser(name: String!, email: String!, phone: String, status: Boolean): User
 `;
-
