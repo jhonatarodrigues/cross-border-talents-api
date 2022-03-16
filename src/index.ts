@@ -18,6 +18,7 @@ const server = new GraphQLServer({
   resolvers,
   middlewares: [errorHandler, permissions],
   context: (req) => ({
+    ...req,
     authenticated: verifyJWT(req),
   }),
 });

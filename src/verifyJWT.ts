@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-errors';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
 
@@ -21,9 +22,9 @@ export default ({ request }: ContextParameters) => {
         email,
       };
     } catch (error) {
-      return false;
+      return new ApolloError('invalidToken', 'invalidToken', {});
     }
   } else {
-    return false;
+    return new ApolloError('tokenRequired', 'tokenRequired', {});
   }
 };
