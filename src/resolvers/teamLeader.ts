@@ -10,18 +10,20 @@ interface ICreateUser {
 }
 
 const Query = {
-  users: () => Users.findAll({ where: { accesslevel: 1 } }),
-  user: (_: any, { id }: { id: string }) => Users.findByPk(id),
+  teamLeaders: () => Users.findAll({ where: { accesslevel: 2 } }),
+  teamLeader: (_: any, { id }: { id: string }) => Users.findByPk(id),
 };
 
 const Mutation = {
-  createUser: async (_: any, { name, email, phone, status }: ICreateUser) => {
+  createTeamLeader: async ({ name, email, phone, status }: ICreateUser) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
+
+    console.log('\n\n\n\n name', name);
 
     try {
       const verifyUser = await Users.findOne({ where: { email } });
       if (verifyUser && verifyUser.id) {
-        throw new Error('userExists');
+        throw new Error('teamLeaderExists');
       }
 
       const user = await Users.create({
@@ -29,7 +31,7 @@ const Mutation = {
         email,
         phone,
         status,
-        accessLevel: 1,
+        accessLevel: 2,
         password: hashedPassword,
       });
 
