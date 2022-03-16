@@ -15,7 +15,10 @@ const Query = {
 };
 
 const Mutation = {
-  createTeamLeader: async ({ name, email, phone, status }: ICreateUser) => {
+  createTeamLeader: async (
+    _: any,
+    { name, email, phone, status }: ICreateUser,
+  ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
     console.log('\n\n\n\n name', name);
