@@ -12,6 +12,10 @@ const isAuthenticated = rule({ cache: 'contextual' })(
       );
     }
 
+    if (!ctx.authenticated.id && !ctx.authenticated.email) {
+      return new ApolloError('tokenExpired', 'tokenExpired', {});
+    }
+
     return ctx.authenticated.id !== undefined;
   },
 );

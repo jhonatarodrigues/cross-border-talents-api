@@ -1,6 +1,7 @@
 import { ApolloError } from 'apollo-server-errors';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
+import { resolve } from 'path';
 
 interface UserPayload {
   id: string;
@@ -19,7 +20,7 @@ export default ({ request }: ContextParameters) => {
     return {
       id,
       email,
-    };
+    } as UserPayload;
   }
 
   return {};
