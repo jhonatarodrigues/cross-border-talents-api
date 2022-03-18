@@ -6,6 +6,7 @@ export const TypeDefs: ITypedef = `
     idUser: ID!
     teamLeader: ID!
     user: User
+    userTeamLeader: User
   }
   type ReturnRecruiter {
     user: User

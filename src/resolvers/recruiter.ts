@@ -19,6 +19,13 @@ const Query = {
           model: Users,
           required: false,
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
+          as: 'user',
+        },
+        {
+          model: Users,
+          required: false,
+          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
+          as: 'userTeamLeader',
         },
       ],
     });

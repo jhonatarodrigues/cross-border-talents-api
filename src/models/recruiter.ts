@@ -32,7 +32,7 @@ Recruiter.init(
   },
 );
 
-Recruiter.belongsTo(Users, { foreignKey: 'idUser' });
-// Recruiter.hasMany(Users, { foreignKey: 'teamLeader' });
+Recruiter.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
+Recruiter.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
 
 export default Recruiter;
