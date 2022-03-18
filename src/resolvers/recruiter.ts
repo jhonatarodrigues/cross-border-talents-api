@@ -25,7 +25,24 @@ const Query = {
 
     return recruiter;
   },
-  recruiter: (_: any, { id }: { id: string }) => Recruiter.findByPk(id),
+  recruiter: (_: any, { id }: { id: string }) => {
+    if (!id) {
+      throw new Error('recruiterIdNotFound');
+    }
+
+    const recruiter = Recruiter.findOne({
+      where: { id },
+      include: [
+        {
+          model: Users,
+          required: false,
+          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
+        },
+      ],
+    });
+
+    return recruiter;
+  },
 };
 
 const Mutation = {
