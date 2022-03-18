@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import { Fn } from 'sequelize/types/utils';
 
 import Recruiter from '../models/recruiter';
 import Users from '../models/users';

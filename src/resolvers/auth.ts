@@ -45,7 +45,7 @@ const Mutation = {
   },
   refreshToken: async (_: any, { refreshToken }: { refreshToken: string }) => {
     try {
-      const { id, email } = jsonwebtoken.verify(
+      const { id } = jsonwebtoken.verify(
         refreshToken,
         String(process.env.REFRESH_TOKEN_SECRET),
       ) as { id: string; email: string };

@@ -21,7 +21,10 @@ Recruiter.init(
       allowNull: false,
     },
     idUser: Sequelize.INTEGER,
-    teamLeader: Sequelize.INTEGER,
+    teamLeader: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize: db,
@@ -30,10 +33,6 @@ Recruiter.init(
 );
 
 Recruiter.belongsTo(Users, { foreignKey: 'idUser' });
-Recruiter.hasMany(Users, { foreignKey: 'teamLeader' });
-
-// Users.hasMany(Recruiter);
-
-// Recruiter.belongsTo(Users, { id: 'idUser' });
+// Recruiter.hasMany(Users, { foreignKey: 'teamLeader' });
 
 export default Recruiter;
