@@ -1,18 +1,21 @@
 import bcrypt from 'bcryptjs';
+import fs from 'fs';
+import path from 'path';
+import { finished } from 'stream';
 
 import Recruiter from '../models/recruiter';
 import Users from '../models/users';
 
-interface ICreateRecruiter {
+interface ICreateCompanie {
+  file: any;
   name: string;
   email: string;
   phone: string;
   status: boolean;
-  teamLeader: number;
 }
 
 const Query = {
-  recruiters: async () => {
+  companies: async () => {
     const recruiter = await Recruiter.findAll({
       include: [
         {
@@ -32,7 +35,7 @@ const Query = {
 
     return recruiter;
   },
-  recruiter: (_: any, { id }: { id: string }) => {
+  companie: (_: any, { id }: { id: string }) => {
     if (!id) {
       throw new Error('recruiterIdNotFound');
     }
@@ -60,49 +63,35 @@ const Query = {
 };
 
 const Mutation = {
-  createRecruiter: async (
-    _: any,
-    { name, email, phone, status, teamLeader }: ICreateRecruiter,
-  ) => {
+  createCompanie: async (_: any, { file }: { file: any }) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
+    console.log('\n\n\n\n\n file ---', file);
+
     try {
-      const verifyUser = await Users.findOne({ where: { email } });
-      if (verifyUser && verifyUser.id) {
-        throw new Error('recruiterExists');
-      }
+      const { createReadStream, filename, mimetype, encoding } = await file;
+      console.log('\n\n\n\n\n filename ---', filename);
 
-      const recruiterValid = await Users.findOne({
-        where: { id: teamLeader, accessLevel: 2 },
+      const filePath = `./uploads/${filename}`;
+
+      const stream = createReadStream();
+      const out = fs.createWriteStream(filePath);
+      stream.pipe(out);
+      await finished(out, (error) => {
+        console.log('error --', error);
       });
 
-      if (!recruiterValid) {
-        throw new Error('recruiterNotFound');
-      }
+      // const out = fs.createWriteStream(`./uploads/${filename}`);
+      // stream.pipe(out);
+      // await finished(out, (err) => {
+      //   console.log('err', err);
+      // });
 
-      const user = await Users.create({
-        name,
-        email,
-        phone,
-        status,
-        accessLevel: 3,
-        password: hashedPassword,
-      });
+      // const stream = createReadStream();
 
-      if (!user.id) {
-        throw new Error('norCreateuser');
-      }
+      console.log('\n\n\n ---teste --', filePath);
 
-      const recruiterAdd = await Recruiter.create({
-        idUser: user.id,
-        teamLeader: teamLeader,
-      });
-
-      if (!recruiterAdd.id) {
-        throw new Error('recruiterNotCreate');
-      }
-
-      return { user: user, recruiter: recruiterAdd };
+      return { id: '1231' };
     } catch (error: any) {
       return error;
     }

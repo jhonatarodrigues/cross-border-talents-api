@@ -19,7 +19,8 @@
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.16.1"
+    "sequelize": "^6.16.1",
+    "stream": "^0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.17.4",
