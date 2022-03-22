@@ -5,11 +5,8 @@ import Users from './users';
 
 class Recruiter extends Model {
   declare id: string;
-  declare email: string;
-  declare phone: string;
-  declare status: boolean;
-  declare password: string;
-  declare accessLevel: number;
+  declare idUser: string;
+  declare teamLeader: string;
 }
 
 Recruiter.init(

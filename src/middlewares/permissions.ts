@@ -30,7 +30,6 @@ export default shield({
     recruiters: and(isAuthenticated),
   },
   Mutation: {
-    createUser: and(isAuthenticated),
     createTeamLeader: and(isAuthenticated),
   },
 });
