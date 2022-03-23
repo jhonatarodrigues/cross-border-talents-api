@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
-import path from 'path';
 import { finished } from 'stream';
+import { v4 as uuidv4 } from 'uuid';
 
-import Recruiter from '../models/recruiter';
+import Companies from '../models/companies';
 import Users from '../models/users';
 
 interface ICreateCompanie {
@@ -12,11 +12,12 @@ interface ICreateCompanie {
   email: string;
   phone: string;
   status: boolean;
+  country: string;
 }
 
 const Query = {
   companies: async () => {
-    const recruiter = await Recruiter.findAll({
+    const db = await Companies.findAll({
       include: [
         {
           model: Users,
@@ -24,23 +25,17 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
-        {
-          model: Users,
-          required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
-          as: 'userTeamLeader',
-        },
       ],
     });
 
-    return recruiter;
+    return db;
   },
   companie: (_: any, { id }: { id: string }) => {
     if (!id) {
-      throw new Error('recruiterIdNotFound');
+      throw new Error('companieIdNotFound');
     }
 
-    const recruiter = Recruiter.findOne({
+    const db = Companies.findOne({
       where: { id },
       include: [
         {
@@ -49,49 +44,65 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
-        {
-          model: Users,
-          required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
-          as: 'userTeamLeader',
-        },
       ],
     });
 
-    return recruiter;
+    return db;
   },
 };
 
 const Mutation = {
-  createCompanie: async (_: any, { file }: { file: any }) => {
+  createCompanie: async (
+    _: any,
+    { file, name, email, phone, status, country }: ICreateCompanie,
+  ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
-    console.log('\n\n\n\n\n file ---', file);
-
     try {
-      const { createReadStream, filename, mimetype, encoding } = await file;
-      console.log('\n\n\n\n\n filename ---', filename);
+      let filePath = '';
+      if (file) {
+        const { createReadStream, filename } = await file;
 
-      const filePath = `./uploads/${filename}`;
+        const extension = filename.split('.').pop();
+        filePath = `./uploads/${uuidv4()}.${extension}`;
 
-      const stream = createReadStream();
-      const out = fs.createWriteStream(filePath);
-      stream.pipe(out);
-      await finished(out, (error) => {
-        console.log('error --', error);
+        const stream = createReadStream();
+        const out = fs.createWriteStream(filePath);
+        stream.pipe(out);
+        await finished(out, (error) => {
+          console.log('error --', error);
+        });
+      }
+
+      const verifyUser = await Users.findOne({ where: { email } });
+      if (verifyUser && verifyUser.id) {
+        throw new Error('companieExists');
+      }
+
+      const user = await Users.create({
+        name,
+        email,
+        phone,
+        status,
+        accessLevel: 4,
+        password: hashedPassword,
       });
 
-      // const out = fs.createWriteStream(`./uploads/${filename}`);
-      // stream.pipe(out);
-      // await finished(out, (err) => {
-      //   console.log('err', err);
-      // });
+      if (!user.id) {
+        throw new Error('norCreateuser');
+      }
 
-      // const stream = createReadStream();
+      const companieAdd = await Companies.create({
+        idUser: user.id,
+        companyLogo: filePath,
+        country,
+      });
 
-      console.log('\n\n\n ---teste --', filePath);
+      if (!companieAdd.id) {
+        throw new Error('companieNotCreate');
+      }
 
-      return { id: '1231' };
+      return { user: user, companie: companieAdd };
     } catch (error: any) {
       return error;
     }

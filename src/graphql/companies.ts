@@ -9,7 +9,8 @@ export const TypeDefs: ITypedef = `
     user: User
   }
   type ReturnCompanie {
-    id: String
+    user: User
+    companie: Companie
   }
 
 `;
@@ -20,5 +21,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createCompanie(file: Upload!): ReturnCompanie
+  createCompanie(file: Upload, name: String!, email: String!, phone: String, status: Boolean, country: String): ReturnCompanie
 `;
