@@ -16,7 +16,7 @@ db.sync();
 const server = new GraphQLServer({
   typeDefs: Schema,
   resolvers,
-  middlewares: [errorHandler],
+  middlewares: [errorHandler, permissions],
   context: (req) => ({
     ...req,
     authenticated: verifyJWT(req),

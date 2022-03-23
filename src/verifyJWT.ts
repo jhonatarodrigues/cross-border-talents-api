@@ -12,16 +12,18 @@ export default ({ request }: ContextParameters) => {
   const token = request.get('Authorization')?.replace('Bearer ', '');
 
   if (token) {
-    const { id, email } = jwt.verify(
-      token,
-      String(process.env.JWT_SECRET),
-    ) as UserPayload;
+    try {
+      const { id, email } = jwt.verify(
+        token,
+        String(process.env.JWT_SECRET),
+      ) as UserPayload;
 
-    return {
-      id,
-      email,
-    } as UserPayload;
+      return {
+        id,
+        email,
+      } as UserPayload;
+    } catch (err) {
+      return new ApolloError('tokenExpired');
+    }
   }
-
-  return {};
 };
