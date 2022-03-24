@@ -2,6 +2,7 @@ import { ITypedef, ITypeDefinitions } from 'graphql-tools';
 
 import * as Auth from './auth';
 import * as Companies from './companies';
+import * as Country from './country';
 import * as Recruiter from './recruiter';
 import * as TeamLeader from './teamLeader';
 import * as User from './user';
@@ -13,6 +14,7 @@ const TypeDefs = `
   ${Auth.TypeDefs}
   ${Recruiter.TypeDefs}
   ${Companies.TypeDefs}
+  ${Country.TypeDefs}
 `;
 
 const Query = `
@@ -20,6 +22,7 @@ const Query = `
   ${TeamLeader.Query}
   ${Recruiter.Query}
   ${Companies.Query}
+  ${Country.Query}
 `;
 const Mutation = `
   ${User.Mutation}
