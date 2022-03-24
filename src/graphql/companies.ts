@@ -6,6 +6,8 @@ export const TypeDefs: ITypedef = `
     idUser: ID!
     companyLogo: String
     country: String
+    companyName: String
+    userTeamLeader: User
     user: User
   }
   type ReturnCompanie {
@@ -21,5 +23,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createCompanie(file: Upload, name: String!, email: String!, phone: String, status: Boolean, country: String): ReturnCompanie
+  createCompanie(file: Upload, name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String): ReturnCompanie
 `;

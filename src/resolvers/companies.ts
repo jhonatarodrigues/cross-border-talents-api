@@ -13,6 +13,8 @@ interface ICreateCompanie {
   phone: string;
   status: boolean;
   country: string;
+  companyName: string;
+  teamLeader: string;
 }
 
 const Query = {
@@ -24,6 +26,12 @@ const Query = {
           required: false,
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
+        },
+        {
+          model: Users,
+          required: false,
+          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
+          as: 'userTeamLeader',
         },
       ],
     });
@@ -44,6 +52,12 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
+        {
+          model: Users,
+          required: false,
+          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
+          as: 'userTeamLeader',
+        },
       ],
     });
 
@@ -54,7 +68,16 @@ const Query = {
 const Mutation = {
   createCompanie: async (
     _: any,
-    { file, name, email, phone, status, country }: ICreateCompanie,
+    {
+      file,
+      name,
+      email,
+      phone,
+      status,
+      country,
+      companyName,
+      teamLeader,
+    }: ICreateCompanie,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
@@ -79,6 +102,15 @@ const Mutation = {
         throw new Error('companieExists');
       }
 
+      if (teamLeader) {
+        const verifyTeamLeader = await Users.findOne({
+          where: { id: teamLeader, accessLevel: 2 },
+        });
+        if (!verifyTeamLeader) {
+          throw new Error('teamLeaderNotFound');
+        }
+      }
+
       const user = await Users.create({
         name,
         email,
@@ -96,6 +128,8 @@ const Mutation = {
         idUser: user.id,
         companyLogo: filePath,
         country,
+        companyName,
+        teamLeader,
       });
 
       if (!companieAdd.id) {

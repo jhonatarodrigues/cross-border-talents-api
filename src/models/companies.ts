@@ -18,9 +18,14 @@ Companies.init(
       autoIncrement: true,
       allowNull: false,
     },
+    teamLeader: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
     idUser: Sequelize.INTEGER,
     companyLogo: Sequelize.STRING,
     country: Sequelize.STRING,
+    companyName: Sequelize.STRING,
   },
   {
     sequelize: db,
@@ -29,5 +34,6 @@ Companies.init(
 );
 
 Companies.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
+Companies.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
 
 export default Companies;
