@@ -17,10 +17,7 @@ const storage = multer.diskStorage({
 
   filename: (req: Request, file: Express.Multer.File, cb: FileNameCallback) => {
     // Extração da extensão do arquivo original:
-    const extensaoArquivo = file.originalname.split('.')[1];
-
-    // Cria um código randômico que será o nome do arquivo
-    const novoNomeArquivo = 'teste';
+    const extensaoArquivo = file.originalname.split('.').pop();
 
     // Indica o novo nome do arquivo:
     cb(null, `${uuidv4()}.${extensaoArquivo}`);
