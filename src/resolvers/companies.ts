@@ -11,6 +11,7 @@ interface ICreateCompanie {
   country: string;
   companyName: string;
   teamLeader: string;
+  companyLogo: string;
 }
 
 const Query = {
@@ -72,6 +73,7 @@ const Mutation = {
       country,
       companyName,
       teamLeader,
+      companyLogo,
     }: ICreateCompanie,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
@@ -106,7 +108,7 @@ const Mutation = {
 
       const companieAdd = await Companies.create({
         idUser: user.id,
-        companyLogo: '',
+        companyLogo,
         country,
         companyName,
         teamLeader,

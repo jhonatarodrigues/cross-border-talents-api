@@ -23,5 +23,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createCompanie(name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String): ReturnCompanie
+  createCompanie(name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String, companyLogo: String): ReturnCompanie
 `;
