@@ -8,8 +8,6 @@ import * as TeamLeader from './teamLeader';
 import * as User from './user';
 
 const TypeDefs = `
-  scalar Upload
-
   ${User.TypeDefs}
   ${Auth.TypeDefs}
   ${Recruiter.TypeDefs}

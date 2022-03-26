@@ -1,13 +1,9 @@
 import bcrypt from 'bcryptjs';
-import fs from 'fs';
-import { finished } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
 
 import Companies from '../models/companies';
 import Users from '../models/users';
 
 interface ICreateCompanie {
-  file: any;
   name: string;
   email: string;
   phone: string;
@@ -69,7 +65,6 @@ const Mutation = {
   createCompanie: async (
     _: any,
     {
-      file,
       name,
       email,
       phone,
@@ -82,21 +77,6 @@ const Mutation = {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
     try {
-      let filePath = '';
-      if (file) {
-        const { createReadStream, filename } = await file;
-
-        const extension = filename.split('.').pop();
-        filePath = `./uploads/${uuidv4()}.${extension}`;
-
-        const stream = createReadStream();
-        const out = fs.createWriteStream(filePath);
-        stream.pipe(out);
-        await finished(out, (error) => {
-          console.log('error --', error);
-        });
-      }
-
       const verifyUser = await Users.findOne({ where: { email } });
       if (verifyUser && verifyUser.id) {
         throw new Error('companieExists');
@@ -126,7 +106,7 @@ const Mutation = {
 
       const companieAdd = await Companies.create({
         idUser: user.id,
-        companyLogo: filePath,
+        companyLogo: '',
         country,
         companyName,
         teamLeader,
