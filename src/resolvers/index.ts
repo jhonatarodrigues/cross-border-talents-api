@@ -1,4 +1,5 @@
 import * as Auth from './auth';
+import * as Candidate from './candidate';
 import * as Companies from './companies';
 import * as Country from './country';
 import * as Recruiter from './recruiter';
@@ -12,6 +13,7 @@ export default {
     ...Recruiter.Query,
     ...Companies.Query,
     ...Country.Query,
+    ...Candidate.Query,
   },
   Mutation: {
     ...User.Mutation,
@@ -19,5 +21,6 @@ export default {
     ...TeamLeader.Mutation,
     ...Recruiter.Mutation,
     ...Companies.Mutation,
+    ...Candidate.Mutation,
   },
 };

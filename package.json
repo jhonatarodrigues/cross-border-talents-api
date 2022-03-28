@@ -19,6 +19,7 @@
     "graphql-shield": "^7.5.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "sequelize": "^6.16.1",
