@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-errors';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 
@@ -48,7 +49,20 @@ const Mutation = {
       const { id } = jsonwebtoken.verify(
         refreshToken,
         String(process.env.REFRESH_TOKEN_SECRET),
-      ) as { id: string; email: string };
+        (error) => {
+          console.log('\n\n\n\n error expired ', error?.message);
+          if (error?.message === 'jwt expired') {
+            // throw new Error('refreshTokenExpired');
+            return new ApolloError('refreshTokenExpired');
+          }
+        },
+      ) as { id: string; email: string } | any;
+
+      if (!id) {
+        throw new Error('refreshTokenExpired');
+      }
+
+      console.log('\n\n\n id', id);
 
       const user = await Users.findOne({ where: { id } });
       if (!user) {
@@ -72,6 +86,7 @@ const Mutation = {
         user,
       };
     } catch (error: any) {
+      // console.log('\n\n\n\n error ---', error);
       return error;
     }
   },

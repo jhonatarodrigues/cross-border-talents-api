@@ -1,7 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
-import { resolve } from 'path';
 
 interface UserPayload {
   id: string;
@@ -23,6 +22,8 @@ export default ({ request }: ContextParameters) => {
         email,
       } as UserPayload;
     } catch (err) {
+      console.log('\n\n\n\n error0000sadas-da-s ', err);
+
       return new ApolloError('tokenExpired');
     }
   }
