@@ -5,7 +5,7 @@ interface ICreateInterestSkills {
 }
 
 const Query = {
-  interestSkills: () => InterestSkills.findAll(),
+  interestSkills: () => InterestSkills.findAll({ order: [['id', 'Desc']] }),
   interestSkill: (_: any, { id }: { id: string }) =>
     InterestSkills.findByPk(id),
 };
