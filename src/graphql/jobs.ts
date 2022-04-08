@@ -8,6 +8,7 @@ export const TypeDefs: ITypedef = `
     level: String
     country: String
     description: String
+    interestSkills: InterestSkills
   }
 `;
 

@@ -1,7 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
-import Users from './users';
+import InterestSkills from './intrestSkills';
 
 class Jobs extends Model {
   declare id: string;
@@ -34,6 +34,9 @@ Jobs.init(
   },
 );
 
-Jobs.belongsTo(Users, { foreignKey: 'idInterestSkills', as: 'interestSkills' });
+Jobs.belongsTo(InterestSkills, {
+  foreignKey: 'idInterestSkills',
+  as: 'interestSkills',
+});
 
 export default Jobs;

@@ -1,5 +1,4 @@
-import bcrypt from 'bcryptjs';
-
+import InterestSkills from '../models/intrestSkills';
 import Jobs from '../models/jobs';
 
 interface ICreateJobs {
@@ -11,7 +10,17 @@ interface ICreateJobs {
 }
 
 const Query = {
-  jobs: () => Jobs.findAll({ order: [['id', 'DESC']] }),
+  jobs: () =>
+    Jobs.findAll({
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+    }),
   job: (_: any, { id }: { id: string }) => Jobs.findByPk(id),
 };
 
