@@ -6,6 +6,7 @@ import * as InterestSkills from './interestSkills';
 import * as Jobs from './jobs';
 import * as Recruiter from './recruiter';
 import * as TeamLeader from './teamLeader';
+import * as Testimonials from './testimonials';
 import * as User from './users';
 
 export default {
@@ -18,6 +19,7 @@ export default {
     ...Candidate.Query,
     ...InterestSkills.Query,
     ...Jobs.Query,
+    ...Testimonials.Query,
   },
   Mutation: {
     ...User.Mutation,
@@ -28,5 +30,6 @@ export default {
     ...Candidate.Mutation,
     ...InterestSkills.Mutation,
     ...Jobs.Mutation,
+    ...Testimonials.Mutation,
   },
 };
