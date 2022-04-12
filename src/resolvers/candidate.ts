@@ -49,6 +49,7 @@ const Query = {
           as: 'userRecruiter',
         },
       ],
+      order: [['id', 'DESC']],
     });
 
     return db;
@@ -149,7 +150,7 @@ const Mutation = {
         idUser: user.id,
         profilePicture,
         socialMedia,
-        birthDate: '2022-01-17',
+        birthDate: newBirthDate,
         country,
         gender,
         nativeLanguage,
@@ -162,8 +163,6 @@ const Mutation = {
         recruiter,
         teamLeader,
       });
-
-      console.log('\n\n\n candidate --', candidateAdd);
 
       if (!candidateAdd.id) {
         throw new Error('candidateNotCreate');
