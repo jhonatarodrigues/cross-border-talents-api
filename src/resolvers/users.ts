@@ -10,7 +10,8 @@ interface ICreateUser {
 }
 
 const Query = {
-  users: () => Users.findAll({ where: { accesslevel: 1 } }),
+  users: () =>
+    Users.findAll({ where: { accesslevel: 1 }, order: [['id', 'DESC']] }),
   user: (_: any, { id }: { id: string }) => Users.findByPk(id),
 };
 

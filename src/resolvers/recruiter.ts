@@ -53,6 +53,7 @@ const Query = {
           as: 'userTeamLeader',
         },
       ],
+      order: [['id', 'DESC']],
     });
 
     return recruiter;

@@ -4,6 +4,7 @@ export const TypeDefs: ITypedef = `
   type Candidate {
     id: ID!
     idUser: ID!
+    idInterestSkills: ID!
 
     profilePicture: String
     socialMedia: String
@@ -20,6 +21,7 @@ export const TypeDefs: ITypedef = `
     userRecruiter: User
     userTeamLeader: User
     user: User
+    interestSkills: InterestSkills
   }
   type ReturnCandidate {
     user: User
@@ -54,5 +56,6 @@ export const Mutation = `
 
     recruiter: String,
     teamLeader: String,
+    idInterestSkills: String!,
   ): ReturnCandidate
 `;

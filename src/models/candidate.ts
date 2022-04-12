@@ -1,11 +1,13 @@
 import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
+import InterestSkills from './intrestSkills';
 import Users from './users';
 
 class Candidate extends Model {
   declare id: string;
   declare idUser: string;
+  declare idInterestSkills: string;
 
   declare profilePicture: string;
   declare socialMedia: string;
@@ -33,6 +35,7 @@ Candidate.init(
       allowNull: false,
     },
     idUser: Sequelize.INTEGER,
+    idInterestSkills: Sequelize.INTEGER,
 
     profilePicture: Sequelize.STRING,
     socialMedia: Sequelize.STRING,
@@ -60,5 +63,9 @@ Candidate.init(
 Candidate.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
 Candidate.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
 Candidate.belongsTo(Users, { foreignKey: 'recruiter', as: 'userRecruiter' });
+Candidate.belongsTo(InterestSkills, {
+  foreignKey: 'idInterestSkills',
+  as: 'interestSkills',
+});
 
 export default Candidate;

@@ -4,11 +4,14 @@ export const TypeDefs: ITypedef = `
   type Companie {
     id: ID!
     idUser: ID!
+    idInterestSkills: ID!
+    
     companyLogo: String
     country: String
     companyName: String
     userTeamLeader: User
     user: User
+    interestSkills: InterestSkills
   }
   type ReturnCompanie {
     user: User
@@ -23,5 +26,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createCompanie(name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String, companyLogo: String): ReturnCompanie
+  createCompanie(name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String, companyLogo: String, idInterestSkills: String!,): ReturnCompanie
 `;

@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 
 import Companies from '../models/companies';
+import InterestSkills from '../models/intrestSkills';
 import Users from '../models/users';
 
 interface ICreateCompanie {
@@ -12,6 +13,7 @@ interface ICreateCompanie {
   companyName: string;
   teamLeader: string;
   companyLogo: string;
+  idInterestSkills: string;
 }
 
 const Query = {
@@ -30,7 +32,13 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
         },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
       ],
+      order: [['id', 'DESC']],
     });
 
     return db;
@@ -55,6 +63,11 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
         },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
       ],
     });
 
@@ -74,6 +87,7 @@ const Mutation = {
       companyName,
       teamLeader,
       companyLogo,
+      idInterestSkills,
     }: ICreateCompanie,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
@@ -112,6 +126,7 @@ const Mutation = {
         country,
         companyName,
         teamLeader,
+        idInterestSkills,
       });
 
       if (!companieAdd.id) {

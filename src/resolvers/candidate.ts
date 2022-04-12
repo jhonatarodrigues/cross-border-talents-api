@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import Moment from 'moment';
 
 import Candidate from '../models/candidate';
+import InterestSkills from '../models/intrestSkills';
 import Users from '../models/users';
 
 interface ICreateCandidate {
@@ -24,6 +25,7 @@ interface ICreateCandidate {
 
   recruiter: string;
   teamLeader: string;
+  idInterestSkills: string;
 }
 
 const Query = {
@@ -47,6 +49,11 @@ const Query = {
           required: false,
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userRecruiter',
+        },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
         },
       ],
       order: [['id', 'DESC']],
@@ -80,6 +87,11 @@ const Query = {
           attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userRecruiter',
         },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
       ],
     });
 
@@ -110,6 +122,7 @@ const Mutation = {
 
       recruiter,
       teamLeader,
+      idInterestSkills,
     }: ICreateCandidate,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
@@ -162,6 +175,7 @@ const Mutation = {
 
         recruiter,
         teamLeader,
+        idInterestSkills,
       });
 
       if (!candidateAdd.id) {
