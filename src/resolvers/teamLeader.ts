@@ -4,6 +4,7 @@ import Users from '../models/users';
 
 interface ICreateUser {
   name: string;
+  lastName: string;
   email: string;
   phone: string;
   status: boolean;
@@ -18,7 +19,7 @@ const Query = {
 const Mutation = {
   createTeamLeader: async (
     _: any,
-    { name, email, phone, status }: ICreateUser,
+    { name, lastName, email, phone, status }: ICreateUser,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
@@ -32,6 +33,7 @@ const Mutation = {
 
       const user = await Users.create({
         name,
+        lastName,
         email,
         phone,
         status,

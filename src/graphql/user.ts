@@ -4,6 +4,7 @@ export const TypeDefs: ITypedef = `
   type User {
     id: ID!
     name: String!
+    lastName: String!
     email: String!
     phone: String
     status: Boolean!
@@ -17,5 +18,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createUser(name: String!, email: String!, phone: String, status: Boolean): User
+  createUser(name: String!, lastName: String!, email: String!, phone: String, status: Boolean): User
 `;

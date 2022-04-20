@@ -4,5 +4,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createTeamLeader(name: String!, email: String!, phone: String, status: Boolean): User
+  createTeamLeader(name: String!, lastName: String! email: String!, phone: String, status: Boolean): User
 `;
