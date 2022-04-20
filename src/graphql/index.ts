@@ -13,6 +13,7 @@ import * as User from './user';
 
 const TypeDefs = `
   ${User.TypeDefs}
+  ${TeamLeader.TypeDefs}
   ${Auth.TypeDefs}
   ${Recruiter.TypeDefs}
   ${Companies.TypeDefs}
