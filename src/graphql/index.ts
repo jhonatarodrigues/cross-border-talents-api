@@ -4,7 +4,6 @@ import * as Auth from './auth';
 import * as Candidate from './candidate';
 import * as Companies from './companies';
 import * as Country from './country';
-import * as Department from './department';
 import * as InterestSkill from './interestSkills';
 import * as Jobs from './jobs';
 import * as Recruiter from './recruiter';
@@ -23,7 +22,6 @@ const TypeDefs = `
   ${InterestSkill.TypeDefs}
   ${Jobs.TypeDefs}
   ${Testimonials.TypeDefs}
-  ${Department.TypeDefs}
 `;
 
 const Query = `
@@ -36,7 +34,6 @@ const Query = `
   ${InterestSkill.Query}
   ${Jobs.Query}
   ${Testimonials.Query}
-  ${Department.Query}
 `;
 const Mutation = `
   ${User.Mutation}

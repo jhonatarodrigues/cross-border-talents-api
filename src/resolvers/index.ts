@@ -2,7 +2,6 @@ import * as Auth from './auth';
 import * as Candidate from './candidate';
 import * as Companies from './companies';
 import * as Country from './country';
-import * as Department from './department';
 import * as InterestSkills from './interestSkills';
 import * as Jobs from './jobs';
 import * as Recruiter from './recruiter';
@@ -21,7 +20,6 @@ export default {
     ...InterestSkills.Query,
     ...Jobs.Query,
     ...Testimonials.Query,
-    ...Department.Query,
   },
   Mutation: {
     ...User.Mutation,
