@@ -9,6 +9,7 @@ interface ICreateRecruiter {
   phone: string;
   status: boolean;
   teamLeader: number;
+  development: string;
 }
 
 const Query = {
@@ -63,7 +64,7 @@ const Query = {
 const Mutation = {
   createRecruiter: async (
     _: any,
-    { name, email, phone, status, teamLeader }: ICreateRecruiter,
+    { name, email, phone, status, teamLeader, development }: ICreateRecruiter,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
@@ -97,6 +98,7 @@ const Mutation = {
       const recruiterAdd = await Recruiter.create({
         idUser: user.id,
         teamLeader: teamLeader,
+        development,
       });
 
       if (!recruiterAdd.id) {

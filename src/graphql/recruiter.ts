@@ -5,6 +5,7 @@ export const TypeDefs: ITypedef = `
     id: ID!
     idUser: ID!
     teamLeader: ID!
+    development: String
     user: User
     userTeamLeader: User
   }
@@ -21,5 +22,5 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createRecruiter(name: String!, email: String!, phone: String, status: Boolean, teamLeader: Int!): ReturnRecruiter
+  createRecruiter(name: String!, email: String!, phone: String, status: Boolean, teamLeader: Int!, development: String!): ReturnRecruiter
 `;

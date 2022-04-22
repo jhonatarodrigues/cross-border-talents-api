@@ -22,6 +22,7 @@ Recruiter.init(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
+    development: Sequelize.STRING,
   },
   {
     sequelize: db,
