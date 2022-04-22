@@ -1,9 +1,8 @@
 import 'dotenv/config';
 
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { GraphQLServer } from 'graphql-yoga';
 
-import db from './db';
 import Schema from './graphql';
 import errorHandler from './middlewares/error';
 import permissions from './middlewares/permissions';
@@ -11,9 +10,6 @@ import resolvers from './resolvers';
 import Multer from './util/configUpload';
 import formatError from './util/formatError';
 import verifyJWT from './verifyJWT';
-
-// -- sincroniza o banco de dados
-db.sync();
 
 const server = new GraphQLServer({
   typeDefs: Schema,
