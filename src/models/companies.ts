@@ -2,6 +2,7 @@ import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
 import InterestSkills from './intrestSkills';
+import TeamLeader from './teamLeader';
 import Users from './users';
 
 class Companies extends Model {
@@ -33,6 +34,15 @@ Companies.init(
     companyLogo: Sequelize.STRING,
     country: Sequelize.STRING,
     companyName: Sequelize.STRING,
+    industry: Sequelize.STRING,
+    site: Sequelize.STRING,
+    size: Sequelize.STRING,
+    address1: Sequelize.STRING,
+    address2: Sequelize.STRING,
+    city: Sequelize.STRING,
+    facebook: Sequelize.STRING,
+    instagram: Sequelize.STRING,
+    linkedin: Sequelize.STRING,
   },
   {
     sequelize: db,
@@ -41,7 +51,10 @@ Companies.init(
 );
 
 Companies.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
-Companies.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
+Companies.belongsTo(TeamLeader, {
+  foreignKey: 'teamLeader',
+  as: 'userTeamLeader',
+});
 Companies.belongsTo(InterestSkills, {
   foreignKey: 'idInterestSkills',
   as: 'interestSkills',

@@ -2,17 +2,31 @@ import bcrypt from 'bcryptjs';
 
 import Companies from '../models/companies';
 import InterestSkills from '../models/intrestSkills';
+import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
 
 interface ICreateCompanie {
   name: string;
+  lastName: string;
   email: string;
   phone: string;
   status: boolean;
+
   country: string;
   companyName: string;
-  teamLeader: string;
   companyLogo: string;
+
+  industry: string;
+  site: string;
+  size: string;
+  address1: string;
+  address2: string;
+  city: string;
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+
+  teamLeader: string;
   idInterestSkills: string;
 }
 
@@ -27,10 +41,16 @@ const Query = {
           as: 'user',
         },
         {
-          model: Users,
+          model: TeamLeader,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
         {
           model: InterestSkills,
@@ -80,13 +100,26 @@ const Mutation = {
     _: any,
     {
       name,
+      lastName,
       email,
       phone,
       status,
+
       country,
       companyName,
-      teamLeader,
       companyLogo,
+
+      industry,
+      site,
+      size,
+      address1,
+      address2,
+      city,
+      facebook,
+      instagram,
+      linkedin,
+
+      teamLeader,
       idInterestSkills,
     }: ICreateCompanie,
   ) => {
@@ -99,8 +132,8 @@ const Mutation = {
       }
 
       if (teamLeader) {
-        const verifyTeamLeader = await Users.findOne({
-          where: { id: teamLeader, accessLevel: 2 },
+        const verifyTeamLeader = await TeamLeader.findOne({
+          where: { id: teamLeader },
         });
         if (!verifyTeamLeader) {
           throw new Error('teamLeaderNotFound');
@@ -109,6 +142,7 @@ const Mutation = {
 
       const user = await Users.create({
         name,
+        lastName,
         email,
         phone,
         status,
@@ -125,6 +159,17 @@ const Mutation = {
         companyLogo,
         country,
         companyName,
+
+        industry,
+        site,
+        size,
+        address1,
+        address2,
+        city,
+        facebook,
+        instagram,
+        linkedin,
+
         teamLeader,
         idInterestSkills,
       });

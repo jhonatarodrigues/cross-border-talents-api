@@ -9,9 +9,20 @@ export const TypeDefs: ITypedef = `
     companyLogo: String
     country: String
     companyName: String
-    userTeamLeader: User
-    user: User
+
+    industry: String
+    site: String
+    size: String
+    address1: String
+    address2: String
+    city: String
+    facebook: String
+    instagram: String
+    linkedin: String
+
     interestSkills: InterestSkills
+    userTeamLeader: TeamLeader
+    user: User
   }
   type ReturnCompanie {
     user: User
@@ -26,5 +37,28 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createCompanie(name: String!, email: String!, phone: String, status: Boolean, country: String, companyName: String, teamLeader: String, companyLogo: String, idInterestSkills: String!,): ReturnCompanie
+  createCompanie(
+    name: String!, 
+    lastName: String!,
+    email: String!, 
+    phone: String, 
+    status: Boolean, 
+
+    country: String, 
+    companyName: String, 
+    companyLogo: String, 
+
+    industry: String,
+    site: String,
+    size: String,
+    address1: String,
+    address2: String,
+    city: String,
+    facebook: String,
+    instagram: String,
+    linkedin: String,
+    
+    teamLeader: String, 
+    idInterestSkills: String!
+  ): ReturnCompanie
 `;

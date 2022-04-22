@@ -4,7 +4,7 @@ export const TypeDefs: ITypedef = `
   type User {
     id: ID!
     name: String!
-    lastName: String!
+    lastName: String
     email: String!
     phone: String
     status: Boolean!

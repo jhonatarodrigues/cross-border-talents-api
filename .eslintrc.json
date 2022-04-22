@@ -15,6 +15,7 @@
     "ecmaFeatures": {
       "jsx": true
     }
+    
   },
   "plugins": [
     "prettier",
