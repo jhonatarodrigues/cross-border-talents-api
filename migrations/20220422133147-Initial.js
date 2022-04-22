@@ -26,15 +26,16 @@ module.exports = {
     const testimonials = `CREATE TABLE IF NOT EXISTS \`testimonials\` (\`id\` INTEGER NOT NULL auto_increment , \`name\` VARCHAR(255), \`picture\` VARCHAR(255), \`testimonial\` TEXT, \`date\` DATETIME, \`observations\` VARCHAR(255), \`country\` VARCHAR(255), \`createdAt\` DATETIME NOT NULL, \`updatedAt\` DATETIME NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB;
     `;
 
-    queryInterface.sequelize.query(users);
-    queryInterface.sequelize.query(interestSkills);
-    queryInterface.sequelize.query(candidates);
-    queryInterface.sequelize.query(companies);
-    queryInterface.sequelize.query(jobs);
-    queryInterface.sequelize.query(recruiters);
-    queryInterface.sequelize.query(teamLeaders);
-
-    return queryInterface.sequelize.query(testimonials);
+    return Promise.all([
+      queryInterface.sequelize.query(users),
+      queryInterface.sequelize.query(interestSkills),
+      queryInterface.sequelize.query(candidates),
+      queryInterface.sequelize.query(companies),
+      queryInterface.sequelize.query(jobs),
+      queryInterface.sequelize.query(recruiters),
+      queryInterface.sequelize.query(teamLeaders),
+      queryInterface.sequelize.query(testimonials),
+    ]);
   },
 
   async down(queryInterface) {
