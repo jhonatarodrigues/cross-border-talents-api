@@ -7,7 +7,7 @@ export const TypeDefs: ITypedef = `
     teamLeader: ID!
     interestSkills: String
     user: User
-    userTeamLeader: User
+    userTeamLeader: TeamLeader
   }
   type ReturnRecruiter {
     user: User

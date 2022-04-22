@@ -25,10 +25,16 @@ const Query = {
           as: 'user',
         },
         {
-          model: Users,
+          model: TeamLeader,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
       ],
     });
@@ -50,13 +56,18 @@ const Query = {
           as: 'user',
         },
         {
-          model: Users,
+          model: TeamLeader,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
       ],
-      order: [['id', 'DESC']],
     });
 
     return recruiter;
@@ -101,7 +112,6 @@ const Mutation = {
         accessLevel: 3,
         password: hashedPassword,
       });
-      console.log('\n\n\n -- user', user);
 
       if (!user.id) {
         throw new Error('norCreateuser');
