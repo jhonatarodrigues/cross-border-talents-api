@@ -1,15 +1,17 @@
 import bcrypt from 'bcryptjs';
 
 import Recruiter from '../models/recruiter';
+import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
 
 interface ICreateRecruiter {
   name: string;
+  lastName: string;
   email: string;
   phone: string;
   status: boolean;
   teamLeader: number;
-  development: string;
+  interestSkills: string;
 }
 
 const Query = {
@@ -64,7 +66,15 @@ const Query = {
 const Mutation = {
   createRecruiter: async (
     _: any,
-    { name, email, phone, status, teamLeader, development }: ICreateRecruiter,
+    {
+      name,
+      lastName,
+      email,
+      phone,
+      status,
+      teamLeader,
+      interestSkills,
+    }: ICreateRecruiter,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
 
@@ -74,8 +84,8 @@ const Mutation = {
         throw new Error('recruiterExists');
       }
 
-      const recruiterValid = await Users.findOne({
-        where: { id: teamLeader, accessLevel: 2 },
+      const recruiterValid = await TeamLeader.findOne({
+        where: { id: teamLeader },
       });
 
       if (!recruiterValid) {
@@ -84,12 +94,14 @@ const Mutation = {
 
       const user = await Users.create({
         name,
+        lastName,
         email,
         phone,
         status,
         accessLevel: 3,
         password: hashedPassword,
       });
+      console.log('\n\n\n -- user', user);
 
       if (!user.id) {
         throw new Error('norCreateuser');
@@ -98,7 +110,7 @@ const Mutation = {
       const recruiterAdd = await Recruiter.create({
         idUser: user.id,
         teamLeader: teamLeader,
-        development,
+        interestSkills,
       });
 
       if (!recruiterAdd.id) {

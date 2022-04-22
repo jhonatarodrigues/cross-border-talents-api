@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
+import TeamLeader from './teamLeader';
 import Users from './users';
 
 class Recruiter extends Model {
@@ -22,7 +23,7 @@ Recruiter.init(
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-    development: Sequelize.STRING,
+    interestSkills: Sequelize.STRING,
   },
   {
     sequelize: db,
@@ -31,6 +32,9 @@ Recruiter.init(
 );
 
 Recruiter.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
-Recruiter.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
+Recruiter.belongsTo(TeamLeader, {
+  foreignKey: 'teamLeader',
+  as: 'userTeamLeader',
+});
 
 export default Recruiter;
