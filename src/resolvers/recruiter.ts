@@ -37,6 +37,7 @@ const Query = {
           ],
         },
       ],
+      order: [['id', 'DESC']],
     });
 
     return recruiter;
