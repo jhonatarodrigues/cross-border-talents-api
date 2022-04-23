@@ -17,9 +17,10 @@ export const TypeDefs: ITypedef = `
     allowContactMe: Boolean
     privacityPolicy: Boolean
     englishLevel: String
+    observations: String
 
-    userRecruiter: User
-    userTeamLeader: User
+    userRecruiter: Recruiter
+    userTeamLeader: TeamLeader
     user: User
     interestSkills: InterestSkills
   }
@@ -38,6 +39,7 @@ export const Query = `
 export const Mutation = `
   createCandidate(
     name: String!, 
+    lastName: String!,
     email: String!, 
     phone: String, 
     status: Boolean, 
@@ -53,6 +55,7 @@ export const Mutation = `
     allowContactMe: Boolean,
     privacityPolicy: Boolean,
     englishLevel: String,
+    observations: String,
 
     recruiter: String,
     teamLeader: String,

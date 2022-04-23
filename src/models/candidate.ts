@@ -2,6 +2,8 @@ import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
 import InterestSkills from './intrestSkills';
+import Recruiter from './recruiter';
+import TeamLeader from './teamLeader';
 import Users from './users';
 
 class Candidate extends Model {
@@ -20,6 +22,7 @@ class Candidate extends Model {
   declare privacityPolicy: boolean;
   declare englishLevel: string;
   declare recruiter: string;
+  declare observations: string;
 }
 
 Candidate.init(
@@ -48,6 +51,7 @@ Candidate.init(
     allowContactMe: Sequelize.BOOLEAN,
     privacityPolicy: Sequelize.BOOLEAN,
     englishLevel: Sequelize.STRING,
+    observations: Sequelize.TEXT,
 
     recruiter: {
       type: Sequelize.INTEGER,
@@ -61,8 +65,14 @@ Candidate.init(
 );
 
 Candidate.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
-Candidate.belongsTo(Users, { foreignKey: 'teamLeader', as: 'userTeamLeader' });
-Candidate.belongsTo(Users, { foreignKey: 'recruiter', as: 'userRecruiter' });
+Candidate.belongsTo(TeamLeader, {
+  foreignKey: 'teamLeader',
+  as: 'userTeamLeader',
+});
+Candidate.belongsTo(Recruiter, {
+  foreignKey: 'recruiter',
+  as: 'userRecruiter',
+});
 Candidate.belongsTo(InterestSkills, {
   foreignKey: 'idInterestSkills',
   as: 'interestSkills',

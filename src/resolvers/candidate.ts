@@ -3,10 +3,13 @@ import Moment from 'moment';
 
 import Candidate from '../models/candidate';
 import InterestSkills from '../models/intrestSkills';
+import Recruiter from '../models/recruiter';
+import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
 
 interface ICreateCandidate {
   name: string;
+  lastName: string;
   email: string;
   phone: string;
   status: boolean;
@@ -22,6 +25,7 @@ interface ICreateCandidate {
   allowContactMe: boolean;
   privacityPolicy: boolean;
   englishLevel: string;
+  observations: string;
 
   recruiter: string;
   teamLeader: string;
@@ -39,16 +43,28 @@ const Query = {
           as: 'user',
         },
         {
-          model: Users,
+          model: TeamLeader,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
         {
-          model: Users,
+          model: Recruiter,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
         {
           model: InterestSkills,
@@ -104,6 +120,7 @@ const Mutation = {
     _: any,
     {
       name,
+      lastName,
       email,
       phone,
       status,
@@ -119,6 +136,7 @@ const Mutation = {
       allowContactMe,
       privacityPolicy,
       englishLevel,
+      observations,
 
       recruiter,
       teamLeader,
@@ -138,8 +156,8 @@ const Mutation = {
       }
 
       if (teamLeader) {
-        const verifyTeamLeader = await Users.findOne({
-          where: { id: teamLeader, accessLevel: 2 },
+        const verifyTeamLeader = await TeamLeader.findOne({
+          where: { id: teamLeader },
         });
         if (!verifyTeamLeader) {
           throw new Error('teamLeaderNotFound');
@@ -148,6 +166,7 @@ const Mutation = {
 
       const user = await Users.create({
         name,
+        lastName,
         email,
         phone,
         status,
@@ -172,6 +191,7 @@ const Mutation = {
         allowContactMe,
         privacityPolicy,
         englishLevel,
+        observations,
 
         recruiter,
         teamLeader,
