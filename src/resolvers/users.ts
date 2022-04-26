@@ -44,6 +44,20 @@ const Mutation = {
       return error;
     }
   },
+  removeUser: async (_: any, { id }: { id: string }) => {
+    try {
+      const user = await Users.findByPk(id);
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await user.destroy();
+
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
 };
 
 export { Query, Mutation };
