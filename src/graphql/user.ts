@@ -20,4 +20,5 @@ export const Query = `
 export const Mutation = `
   createUser(name: String!, lastName: String!, email: String!, phone: String, status: Boolean): User
   removeUser(id: ID!): Boolean
+  updateUser(id: ID!, name: String!, lastName: String!, phone: String, status: Boolean): User
 `;

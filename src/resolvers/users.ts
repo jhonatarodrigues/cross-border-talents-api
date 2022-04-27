@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import Users from '../models/users';
 
 interface ICreateUser {
+  id: string;
   name: string;
   lastName: string;
   email: string;
@@ -54,6 +55,28 @@ const Mutation = {
       await user.destroy();
 
       return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateUser: async (
+    _: any,
+    { id, name, lastName, phone, status }: ICreateUser,
+  ) => {
+    try {
+      const user = await Users.findByPk(id);
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await user.update({
+        name,
+        lastName,
+        phone,
+        status,
+      });
+
+      return user;
     } catch (error: any) {
       return error;
     }
