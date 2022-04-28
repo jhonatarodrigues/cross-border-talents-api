@@ -11,6 +11,9 @@ interface ICreateUser {
   status: boolean;
   department: string;
 }
+interface IUpdateUser extends ICreateUser {
+  id: string;
+}
 
 const Query = {
   teamLeaders: async () => {
@@ -71,7 +74,60 @@ const Mutation = {
         department,
       });
 
-      console.log('\n\n\n\n\nteamLeader', teamLeader);
+      return {
+        user,
+        department: teamLeader.department,
+        id: teamLeader.id,
+        idUser: teamLeader.idUser,
+      };
+    } catch (error: any) {
+      return error;
+    }
+  },
+  removeTeamLeader: async (_: any, { id }: { id: string }) => {
+    try {
+      const teamLeader = await TeamLeader.findOne({ where: { id } });
+      if (!teamLeader) {
+        throw new Error('teamLeaderNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: teamLeader.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await teamLeader.destroy();
+      await user.destroy();
+
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateTeamLeader: async (
+    _: any,
+    { id, name, lastName, phone, status, department }: IUpdateUser,
+  ) => {
+    try {
+      const teamLeader = await TeamLeader.findOne({ where: { id } });
+      if (!teamLeader) {
+        throw new Error('teamLeaderNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: teamLeader.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await teamLeader.update({
+        department,
+      });
+      await user.update({
+        name,
+        lastName,
+        phone,
+        status,
+      });
 
       return {
         user,

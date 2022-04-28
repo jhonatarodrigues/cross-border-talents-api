@@ -16,4 +16,6 @@ export const Query = `
 
 export const Mutation = `
   createTeamLeader(name: String!, lastName: String! email: String!, phone: String, status: Boolean, department: String!): TeamLeader
+  removeTeamLeader(id: ID!): Boolean
+  updateTeamLeader(id: ID!, name: String!, lastName: String!, phone: String, status: Boolean, department: String!): TeamLeader
 `;
