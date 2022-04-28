@@ -23,4 +23,6 @@ export const Query = `
 
 export const Mutation = `
   createRecruiter(name: String!, lastName: String!, email: String!, phone: String, status: Boolean, teamLeader: Int!, interestSkills: String!): ReturnRecruiter
+  removeRecruiter(id: ID!): boolean
+  updateRecruiter(id: ID!, name: String!, lastName: String!, phone: String, status: Boolean, teamLeader: Int!, interestSkills: String!): ReturnRecruiter
 `;

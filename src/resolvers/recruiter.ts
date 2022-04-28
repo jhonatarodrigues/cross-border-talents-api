@@ -13,6 +13,9 @@ interface ICreateRecruiter {
   teamLeader: number;
   interestSkills: string;
 }
+interface IUpdateRecruiter extends ICreateRecruiter {
+  id: string;
+}
 
 const Query = {
   recruiters: async () => {
@@ -129,6 +132,65 @@ const Mutation = {
       }
 
       return { user: user, recruiter: recruiterAdd };
+    } catch (error: any) {
+      return error;
+    }
+  },
+  removeRecruiter: async (_: any, { id }: { id: string }) => {
+    try {
+      const recruiter = await Recruiter.findOne({ where: { id } });
+      if (!recruiter) {
+        throw new Error('recruiterNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: recruiter.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await recruiter.destroy();
+      await user.destroy();
+
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateRecruiter: async (
+    _: any,
+    {
+      id,
+      name,
+      lastName,
+      phone,
+      status,
+      teamLeader,
+      interestSkills,
+    }: IUpdateRecruiter,
+  ) => {
+    try {
+      const recruiter = await Recruiter.findOne({ where: { id } });
+      if (!recruiter) {
+        throw new Error('recruiterNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: recruiter.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      const recruiterAdd = await recruiter.update({
+        teamLeader,
+        interestSkills,
+      });
+      const userAdd = await user.update({
+        name,
+        lastName,
+        phone,
+        status,
+      });
+
+      return { user: userAdd, recruiter: recruiterAdd };
     } catch (error: any) {
       return error;
     }
