@@ -30,6 +30,10 @@ interface ICreateCompanie {
   idInterestSkills: string;
 }
 
+interface IUpdateCompanie extends ICreateCompanie {
+  id: string;
+}
+
 const Query = {
   companies: async () => {
     const db = await Companies.findAll({
@@ -37,7 +41,6 @@ const Query = {
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
         {
@@ -74,7 +77,6 @@ const Query = {
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
         {
@@ -176,6 +178,111 @@ const Mutation = {
 
       if (!companieAdd.id) {
         throw new Error('companieNotCreate');
+      }
+
+      return { user: user, companie: companieAdd };
+    } catch (error: any) {
+      return error;
+    }
+  },
+  removeCompanie: async (_: any, { id }: { id: string }) => {
+    try {
+      const companie = await Companies.findOne({ where: { id } });
+      if (!companie) {
+        throw new Error('companieNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: companie.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await companie.destroy();
+      await user.destroy();
+
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateCompanie: async (
+    _: any,
+    {
+      id,
+      name,
+      lastName,
+      phone,
+      status,
+
+      country,
+      companyName,
+      companyLogo,
+
+      industry,
+      site,
+      size,
+      address1,
+      address2,
+      city,
+      facebook,
+      instagram,
+      linkedin,
+
+      teamLeader,
+      idInterestSkills,
+    }: IUpdateCompanie,
+  ) => {
+    try {
+      const companie = await Companies.findOne({ where: { id } });
+      if (!companie) {
+        throw new Error('companieNotFound');
+      }
+
+      const userCompanie = await Users.findOne({
+        where: { id: companie.idUser },
+      });
+      if (!userCompanie) {
+        throw new Error('userNotFound');
+      }
+
+      if (teamLeader) {
+        const verifyTeamLeader = await TeamLeader.findOne({
+          where: { id: teamLeader },
+        });
+        if (!verifyTeamLeader) {
+          throw new Error('teamLeaderNotFound');
+        }
+      }
+
+      const user = await userCompanie.update({
+        name,
+        lastName,
+        phone,
+        status,
+      });
+
+      const companieAdd = await companie.update({
+        idUser: user.id,
+        companyLogo,
+        country,
+        companyName,
+
+        industry,
+        site,
+        size,
+        address1,
+        address2,
+        city,
+        facebook,
+        instagram,
+        linkedin,
+
+        teamLeader,
+        idInterestSkills,
+      });
+
+      if (!companieAdd.id) {
+        throw new Error('companieNotUpdate');
       }
 
       return { user: user, companie: companieAdd };

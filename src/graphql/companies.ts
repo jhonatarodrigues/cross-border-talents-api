@@ -61,4 +61,30 @@ export const Mutation = `
     teamLeader: String, 
     idInterestSkills: String!
   ): ReturnCompanie
+
+  removeCompanie(id: ID!): Boolean
+  updateCompanie(
+    id: ID!,
+    name: String!, 
+    lastName: String!,
+    phone: String, 
+    status: Boolean, 
+
+    country: String, 
+    companyName: String, 
+    companyLogo: String, 
+
+    industry: String,
+    site: String,
+    size: String,
+    address1: String,
+    address2: String,
+    city: String,
+    facebook: String,
+    instagram: String,
+    linkedin: String,
+    
+    teamLeader: String, 
+    idInterestSkills: String!
+  ): ReturnCompanie
 `;

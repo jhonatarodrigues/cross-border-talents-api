@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-import { Response } from 'express';
+import express, { Response } from 'express';
 import { GraphQLServer } from 'graphql-yoga';
 
 import Schema from './graphql';
@@ -28,6 +28,7 @@ server.post('/upload', Multer.single('file'), (req: any, res: Response) => {
 
   res.json({ fileName: req.file.filename });
 });
+server.use('/files', express.static('uploads'));
 
 server
   .start({
