@@ -207,7 +207,7 @@ const Mutation = {
       return error;
     }
   },
-  removeRecruiter: async (_: any, { id }: { id: string }) => {
+  removeCandidate: async (_: any, { id }: { id: string }) => {
     try {
       const candidate = await Candidate.findOne({ where: { id } });
       if (!candidate) {
@@ -224,6 +224,7 @@ const Mutation = {
 
       return true;
     } catch (error: any) {
+      console.log('\n\n\n\n error', error);
       return error;
     }
   },
