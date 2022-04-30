@@ -7,7 +7,7 @@ interface ICreateJobs {
   level: string;
   country: string;
   description: string;
-  date: Date;
+  date: string;
 }
 
 interface IUpdateJobs extends ICreateJobs {
