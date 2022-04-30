@@ -11,6 +11,7 @@ class Jobs extends Model {
   declare level: string;
   declare country: string;
   declare description: string;
+  declare date: Date;
 }
 
 Jobs.init(
@@ -27,6 +28,7 @@ Jobs.init(
     level: Sequelize.STRING,
     country: Sequelize.STRING,
     description: Sequelize.TEXT,
+    date: Sequelize.DATE,
   },
   {
     sequelize: db,
