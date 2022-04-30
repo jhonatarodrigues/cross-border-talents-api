@@ -61,4 +61,30 @@ export const Mutation = `
     teamLeader: String,
     idInterestSkills: String!,
   ): ReturnCandidate
+
+  removeCandidate(id: ID!): Boolean
+  updateCandidate(
+    id: ID!,
+    name: String!, 
+    lastName: String!,
+    phone: String, 
+    status: Boolean, 
+
+    profilePicture: String,
+    socialMedia: String,
+    birthDate: String,
+    country: String,
+    gender: String,
+    nativeLanguage: String,
+    cvUpload: String,
+    allowTalentPool: Boolean,
+    allowContactMe: Boolean,
+    privacityPolicy: Boolean,
+    englishLevel: String,
+    observations: String,
+
+    recruiter: String,
+    teamLeader: String,
+    idInterestSkills: String!,
+  ): ReturnCandidate
 `;

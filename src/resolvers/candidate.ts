@@ -32,6 +32,10 @@ interface ICreateCandidate {
   idInterestSkills: string;
 }
 
+interface IUpdateCandidate extends ICreateCandidate {
+  id: string;
+}
+
 const Query = {
   candidates: async () => {
     const db = await Candidate.findAll({
@@ -39,7 +43,6 @@ const Query = {
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
         {
@@ -88,19 +91,16 @@ const Query = {
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'user',
         },
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
         },
         {
           model: Users,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userRecruiter',
         },
         {
@@ -201,6 +201,112 @@ const Mutation = {
       if (!candidateAdd.id) {
         throw new Error('candidateNotCreate');
       }
+
+      return { user: user, candidate: candidateAdd };
+    } catch (error: any) {
+      return error;
+    }
+  },
+  removeRecruiter: async (_: any, { id }: { id: string }) => {
+    try {
+      const candidate = await Candidate.findOne({ where: { id } });
+      if (!candidate) {
+        throw new Error('candidateNotFound');
+      }
+
+      const user = await Users.findOne({ where: { id: candidate.idUser } });
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      await candidate.destroy();
+      await user.destroy();
+
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateCandidate: async (
+    _: any,
+    {
+      id,
+      name,
+      lastName,
+      phone,
+      status,
+
+      profilePicture,
+      socialMedia,
+      birthDate,
+      country,
+      gender,
+      nativeLanguage,
+      cvUpload,
+      allowTalentPool,
+      allowContactMe,
+      privacityPolicy,
+      englishLevel,
+      observations,
+
+      recruiter,
+      teamLeader,
+      idInterestSkills,
+    }: IUpdateCandidate,
+  ) => {
+    const newBirthDate = Moment(birthDate).format('YYYY-MM-DD');
+    if (birthDate && newBirthDate === 'Invalid date') {
+      return new Error('invalidDate');
+    }
+
+    try {
+      const candidate = await Candidate.findOne({ where: { id } });
+      if (!candidate) {
+        throw new Error('candidateNotFound');
+      }
+
+      const userCandidate = await Users.findOne({
+        where: { id: candidate.idUser },
+      });
+      if (!userCandidate) {
+        throw new Error('userNotFound');
+      }
+
+      if (teamLeader) {
+        const verifyTeamLeader = await TeamLeader.findOne({
+          where: { id: teamLeader },
+        });
+        if (!verifyTeamLeader) {
+          throw new Error('teamLeaderNotFound');
+        }
+      }
+
+      const user = await userCandidate.update({
+        name,
+        lastName,
+        phone,
+        status,
+      });
+
+      const candidateAdd = await candidate.update({
+        idUser: user.id,
+        profilePicture,
+        socialMedia,
+        birthDate: newBirthDate,
+        country,
+        gender,
+        nativeLanguage,
+        cvUpload,
+        allowTalentPool,
+        allowContactMe,
+        privacityPolicy,
+        englishLevel,
+        observations,
+
+        recruiter,
+        teamLeader,
+        idInterestSkills,
+      });
 
       return { user: user, candidate: candidateAdd };
     } catch (error: any) {
