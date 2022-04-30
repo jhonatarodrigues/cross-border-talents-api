@@ -20,5 +20,5 @@ export const Query = `
 export const Mutation = `
   createTestimonial(name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!): Testimonial
   removeTestimonial(id: ID!): Boolean
-  updateTestimonial(name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!): Testimonial
+  updateTestimonial(id: ID!, name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!): Testimonial
 `;
