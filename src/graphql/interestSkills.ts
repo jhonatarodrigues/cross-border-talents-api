@@ -14,6 +14,6 @@ export const Query = `
 
 export const Mutation = `
   createInterestSkill(name: String!): InterestSkills
-  removeInterestSkill(id: ID!): InterestSkills
+  removeInterestSkill(id: ID!): Boolean
   updateInterestSkill(id: ID!, name: String!): InterestSkills
 `;
