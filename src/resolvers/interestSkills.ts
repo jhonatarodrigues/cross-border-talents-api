@@ -27,6 +27,32 @@ const Mutation = {
       return error;
     }
   },
+  removeInterestSkill: async (_: any, { id }: { id: string }) => {
+    try {
+      const interest = await InterestSkills.findByPk(id);
+      if (!interest) {
+        throw new Error('interestSkillsNotFound');
+      }
+
+      await interest.destroy();
+      return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  updateInterestSkill: async (_: any, { id, name }: any) => {
+    try {
+      const interest = await InterestSkills.findByPk(id);
+      if (!interest) {
+        throw new Error('interestSkillsNotFound');
+      }
+
+      await interest.update({ name });
+      return interest;
+    } catch (error: any) {
+      return error;
+    }
+  },
 };
 
 export { Query, Mutation };
