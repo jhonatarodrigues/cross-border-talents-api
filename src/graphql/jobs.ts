@@ -11,11 +11,20 @@ export const TypeDefs: ITypedef = `
     interestSkills: InterestSkills
     date: String
   }
+  type InfoPage{
+    currentPage: Int
+    maxPage: Int
+  } 
+  type SearchJobs {
+    jobs: [Jobs]
+    infoPage: InfoPage
+  }
 `;
 
 export const Query = `
   jobs: [Jobs!]!
   job(id: ID): Jobs
+  jobsSearch(page: Int, itensPerPage: Int, search: String): SearchJobs
 `;
 
 export const Mutation = `

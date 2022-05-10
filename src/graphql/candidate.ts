@@ -28,12 +28,17 @@ export const TypeDefs: ITypedef = `
     user: User
     candidate: Candidate
   }
+  type SearchCandidates {
+    candidates: [Candidate]
+    infoPage: InfoPage
+  }
 
 `;
 
 export const Query = `
   candidates: [Candidate]
   candidate(id: ID): Candidate
+  searchCandidates(page: Int, itensPerPage: Int, search: String): SearchCandidates
 `;
 
 export const Mutation = `

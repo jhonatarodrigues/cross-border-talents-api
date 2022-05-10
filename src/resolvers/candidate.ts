@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import Moment from 'moment';
+import { Op } from 'sequelize';
 
 import Candidate from '../models/candidate';
 import InterestSkills from '../models/intrestSkills';
@@ -112,6 +113,137 @@ const Query = {
     });
 
     return db;
+  },
+  searchCandidates: async (
+    _: any,
+    {
+      page,
+      itensPerPage,
+      search = '',
+    }: { page: number; itensPerPage: number; search: string },
+  ) => {
+    console.log('\n\nn\n\n\n aquii --- \n\n\n\n\n\n');
+
+    const offset = page ? (page - 1) * itensPerPage : undefined;
+    const where = {};
+    let whereUser = {};
+
+    if (search) {
+      whereUser = {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            lastName: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            email: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      };
+    }
+
+    const db = await Candidate.findAll({
+      include: [
+        {
+          model: Users,
+          required: true,
+          as: 'user',
+          where: whereUser,
+        },
+        {
+          model: TeamLeader,
+          required: false,
+          as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: Recruiter,
+          required: false,
+          as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+      order: [['id', 'DESC']],
+      where,
+      offset,
+      limit: itensPerPage || undefined,
+    });
+    const countCandidate = await Candidate.findAndCountAll({
+      include: [
+        {
+          model: Users,
+          required: false,
+          as: 'user',
+          where: whereUser,
+        },
+        {
+          model: TeamLeader,
+          required: false,
+          as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: Recruiter,
+          required: false,
+          as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+      order: [['id', 'DESC']],
+      where,
+    });
+
+    // console.log('\n\n\n\n\n countCandidate', countCandidate);
+
+    return {
+      candidates: db,
+      infoPage: {
+        currentPage: page,
+        maxPage: Math.ceil(countCandidate.count / itensPerPage),
+      },
+    };
   },
 };
 

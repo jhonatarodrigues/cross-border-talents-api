@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import InterestSkills from '../models/intrestSkills';
 import Jobs from '../models/jobs';
 
@@ -27,6 +29,57 @@ const Query = {
       ],
     }),
   job: (_: any, { id }: { id: string }) => Jobs.findByPk(id),
+  jobsSearch: async (
+    _: any,
+    {
+      page,
+      itensPerPage,
+      search,
+    }: { page: number; itensPerPage: number; search: string },
+  ) => {
+    const offset = page ? (page - 1) * itensPerPage : undefined;
+    const where = search
+      ? {
+          [Op.or]: [
+            { jobTitle: { [Op.like]: `%${search}%` } },
+            { description: { [Op.like]: `%${search}%` } },
+          ],
+        }
+      : {};
+    const jobs = await Jobs.findAll({
+      where,
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+      offset,
+      limit: itensPerPage || undefined,
+    });
+
+    const infoPage = await Jobs.findAndCountAll({
+      where,
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+    });
+
+    return {
+      jobs,
+      infoPage: {
+        currentPage: page,
+        maxPage: Math.ceil(infoPage.count / itensPerPage),
+      },
+    };
+  },
 };
 
 const Mutation = {
