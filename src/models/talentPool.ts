@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 
 import db from '../db';
+import Candidate from './candidate';
 import TeamLeader from './teamLeader';
 import Users from './users';
 
@@ -28,6 +29,7 @@ TalentPool.init(
     },
     idUser: Sequelize.INTEGER,
     idTeamLeader: Sequelize.INTEGER,
+    idCandidate: Sequelize.INTEGER,
 
     data: Sequelize.DATE,
     charge: Sequelize.STRING,
@@ -42,6 +44,7 @@ TalentPool.init(
   {
     sequelize: db,
     modelName: 'talentPool',
+    tableName: 'talentPool',
   },
 );
 
@@ -49,6 +52,10 @@ TalentPool.belongsTo(Users, { foreignKey: 'idUser', as: 'user' });
 TalentPool.belongsTo(TeamLeader, {
   foreignKey: 'idTeamLeader',
   as: 'teamLeader',
+});
+TalentPool.belongsTo(Candidate, {
+  foreignKey: 'idCandidate',
+  as: 'candidate',
 });
 
 export default TalentPool;
