@@ -7,6 +7,7 @@ import * as Country from './country';
 import * as InterestSkill from './interestSkills';
 import * as Jobs from './jobs';
 import * as Recruiter from './recruiter';
+import * as TalentPool from './talentPool';
 import * as TeamLeader from './teamLeader';
 import * as Testimonials from './testimonials';
 import * as User from './user';
@@ -22,6 +23,7 @@ const TypeDefs = `
   ${InterestSkill.TypeDefs}
   ${Jobs.TypeDefs}
   ${Testimonials.TypeDefs}
+  ${TalentPool.TypeDefs}
 `;
 
 const Query = `
@@ -34,6 +36,7 @@ const Query = `
   ${InterestSkill.Query}
   ${Jobs.Query}
   ${Testimonials.Query}
+  ${TalentPool.Query}
 `;
 const Mutation = `
   ${User.Mutation}
@@ -45,6 +48,7 @@ const Mutation = `
   ${InterestSkill.Mutation}
   ${Jobs.Mutation}
   ${Testimonials.Mutation}
+  ${TalentPool.Mutation}
 `;
 
 const Definition: ITypedef = `

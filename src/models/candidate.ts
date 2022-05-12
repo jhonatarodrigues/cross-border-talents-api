@@ -23,6 +23,7 @@ class Candidate extends Model {
   declare englishLevel: string;
   declare recruiter: string;
   declare observations: string;
+  declare talentPoolVerify: boolean;
 }
 
 Candidate.init(
@@ -52,6 +53,7 @@ Candidate.init(
     privacityPolicy: Sequelize.BOOLEAN,
     englishLevel: Sequelize.STRING,
     observations: Sequelize.TEXT,
+    talentPoolVerify: Sequelize.BOOLEAN,
 
     recruiter: {
       type: Sequelize.INTEGER,

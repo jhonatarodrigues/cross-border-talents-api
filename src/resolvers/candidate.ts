@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
 import { Op } from 'sequelize';
 
+import SendMail from '../functions/sendMail';
 import Candidate from '../models/candidate';
 import InterestSkills from '../models/intrestSkills';
 import Recruiter from '../models/recruiter';
@@ -122,8 +124,6 @@ const Query = {
       search = '',
     }: { page: number; itensPerPage: number; search: string },
   ) => {
-    console.log('\n\nn\n\n\n aquii --- \n\n\n\n\n\n');
-
     const offset = page ? (page - 1) * itensPerPage : undefined;
     const where = {};
     let whereUser = {};
@@ -332,6 +332,32 @@ const Mutation = {
 
       if (!candidateAdd.id) {
         throw new Error('candidateNotCreate');
+      }
+
+      if (allowTalentPool && user.id && candidateAdd.id) {
+        const token = await jsonwebtoken.sign(
+          { id: user.id, email: user.email, idCandidate: candidateAdd.id },
+          String(process.env.JWT_SECRET),
+          { expiresIn: '7d' },
+        );
+
+        const mail = await SendMail({
+          // to: user.email,
+          to: 'jhonata.a.r@hotmail.com',
+          subject: 'Welcome to Talent Pool',
+          text: 'Welcome to Talent Pool',
+          html: `
+          <h1>Welcome to Talent Pool</h1>
+          <p>
+          to register in the talent pool, access the link
+          </p>
+          <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool?token=${token}">
+          http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool?token=${token}
+          </a>
+          `,
+        });
+
+        console.log('\n\n\n\n\n mail', mail, token);
       }
 
       return { user: user, candidate: candidateAdd };
