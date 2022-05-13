@@ -32,8 +32,6 @@ export const Mutation = `
   moveUserTalentPool(
     idUser: ID
     idCandidate: ID
-    idTeamLeader: ID
-    data: String
     profile: String
     observation: String
     softwares: String

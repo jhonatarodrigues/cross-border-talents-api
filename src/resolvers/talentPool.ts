@@ -1,4 +1,6 @@
+import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
+import Moment from 'moment';
 
 import Candidate from '../models/candidate';
 import TalentPool from '../models/talentPool';
@@ -8,7 +10,6 @@ import User from '../models/users';
 interface ITalentPool {
   idCandidate: number;
   idUser: number;
-  idTeamLeader: number;
   data: string;
   profile: string;
   observation: string;
@@ -51,7 +52,6 @@ const Query = {
   talentPool: async (_: any, { idUser }: { idUser: string }) => {
     const talentPools = await TalentPool.findOne({
       where: {
-        status: true,
         idUser,
       },
       include: [
@@ -107,7 +107,7 @@ const Mutation = {
     {
       idCandidate,
       idUser,
-      idTeamLeader,
+
       data,
       profile,
       observation,
@@ -118,30 +118,56 @@ const Mutation = {
       languages,
       status,
     }: ITalentPool,
+    { request }: ContextParameters,
   ) => {
     try {
       const talentPool = await TalentPool.findOne({ where: { idCandidate } });
 
-      if (talentPool) {
-        return new Error('talentPoolAlreadyExists');
+      const token = request.get('Authorization')?.replace('Bearer ', '');
+      if (!token) {
+        return;
       }
 
-      const talentPoolCreate = await TalentPool.create({
-        idCandidate,
-        idUser,
-        idTeamLeader,
-        data,
-        profile,
-        observation,
-        softwares,
-        education,
-        experience,
-        languages,
-        status,
-        charge,
-      });
+      const { id } = jwt.verify(token, String(process.env.JWT_SECRET)) as {
+        id: string;
+      };
 
-      return talentPoolCreate;
+      let dataTratada = data;
+      if (!data) {
+        dataTratada = Moment(new Date()).format('YYYY-MM-DD');
+      }
+
+      if (talentPool) {
+        const returnTalentPool = talentPool.update({
+          profile,
+          observation,
+          softwares,
+          education,
+          experience,
+          languages,
+          status,
+          charge,
+        });
+
+        return returnTalentPool;
+      } else {
+        const talentPoolCreate = await TalentPool.create({
+          idCandidate,
+          idUser,
+          idTeamLeader: id,
+          data: dataTratada,
+          profile,
+          observation,
+          softwares,
+          education,
+          experience,
+          languages,
+          status,
+          charge,
+        });
+
+        return talentPoolCreate;
+      }
     } catch (error) {
       return error;
     }

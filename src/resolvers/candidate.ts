@@ -342,8 +342,7 @@ const Mutation = {
         );
 
         const mail = await SendMail({
-          // to: user.email,
-          to: 'jhonata.a.r@hotmail.com',
+          to: user.email,
           subject: 'Welcome to Talent Pool',
           text: 'Welcome to Talent Pool',
           html: `
