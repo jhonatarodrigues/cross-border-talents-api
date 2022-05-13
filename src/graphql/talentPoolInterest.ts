@@ -14,13 +14,11 @@ export const TypeDefs: ITypedef = `
 export const Query = `
   talentPoolInterests(
     idTalentPool: Int
-    idCompany: Int
   ): Boolean
 `;
 
 export const Mutation = `
   addTalentPoolInterest(
     idTalentPool: Int
-    idCompany: Int
   ): TalentPoolInterest
 `;

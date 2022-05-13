@@ -1,19 +1,21 @@
+import { ContextParameters } from 'graphql-yoga/dist/types';
+import jwt from 'jsonwebtoken';
+
 import TalentPoolInterest from '../models/talentPoolInterest';
 
 interface ITalentPoolInterest {
   idTalentPool: number;
-  idCompany: number;
 }
 
 const Query = {
   talentPoolInterests: async (
     _: any,
-    { idTalentPool, idCompany }: ITalentPoolInterest,
+    { idTalentPool }: ITalentPoolInterest,
   ) => {
     const talentPoolInterest = await TalentPoolInterest.findOne({
       where: {
         idTalentPool,
-        idCompany,
+        // idCompany,
       },
     });
 
@@ -24,11 +26,21 @@ const Query = {
 const Mutation = {
   addTalentPoolInterest: async (
     _: any,
-    { idTalentPool, idCompany }: ITalentPoolInterest,
+    { idTalentPool }: ITalentPoolInterest,
+    { request }: ContextParameters,
   ) => {
     try {
+      const token = request.get('Authorization')?.replace('Bearer ', '');
+      if (!token) {
+        return;
+      }
+
+      const { id } = jwt.verify(token, String(process.env.JWT_SECRET)) as {
+        id: string;
+      };
+
       const verify = await TalentPoolInterest.findOne({
-        where: { idTalentPool, idCompany },
+        where: { idTalentPool, idCompany: id },
       });
 
       if (verify) {
@@ -37,7 +49,7 @@ const Mutation = {
 
       const talentPoolInterest = await TalentPoolInterest.create({
         idTalentPool,
-        idCompany,
+        idCompany: id,
       });
 
       return talentPoolInterest;

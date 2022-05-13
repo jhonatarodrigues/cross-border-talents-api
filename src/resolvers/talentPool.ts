@@ -48,6 +48,34 @@ const Query = {
 
     return talentPools;
   },
+  talentPool: async (_: any, { idUser }: { idUser: string }) => {
+    const talentPools = await TalentPool.findOne({
+      where: {
+        status: true,
+        idUser,
+      },
+      include: [
+        {
+          model: Candidate,
+          required: false,
+          as: 'candidate',
+        },
+        {
+          model: TeamLeader,
+          required: false,
+          as: 'teamLeader',
+        },
+        {
+          model: User,
+          required: false,
+          as: 'user',
+        },
+      ],
+      order: [['id', 'DESC']],
+    });
+
+    return talentPools;
+  },
 };
 
 const Mutation = {

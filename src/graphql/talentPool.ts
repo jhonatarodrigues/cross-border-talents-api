@@ -24,6 +24,7 @@ export const TypeDefs: ITypedef = `
 
 export const Query = `
   talentPools: [UserTalentPool]
+  talentPool(idUser: ID!): UserTalentPool
 `;
 
 export const Mutation = `

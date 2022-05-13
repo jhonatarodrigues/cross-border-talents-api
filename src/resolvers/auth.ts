@@ -24,13 +24,13 @@ const Mutation = {
       }
 
       const token = jsonwebtoken.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, accessLevel: user.accessLevel },
         String(process.env.JWT_SECRET),
         { expiresIn: '1d' },
       );
 
       const refreshToken = jsonwebtoken.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, accessLevel: user.accessLevel },
         String(process.env.REFRESH_TOKEN_SECRET),
         { expiresIn: '7d' },
       );

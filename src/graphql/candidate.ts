@@ -18,6 +18,7 @@ export const TypeDefs: ITypedef = `
     privacityPolicy: Boolean
     englishLevel: String
     observations: String
+    talentPoolVerify: Boolean
 
     userRecruiter: Recruiter
     userTeamLeader: TeamLeader
