@@ -350,8 +350,8 @@ const Mutation = {
           <p>
           to register in the talent pool, access the link
           </p>
-          <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool?token=${token}">
-          http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool?token=${token}
+          <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
+          http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
           </a>
           `,
         });
