@@ -26,7 +26,6 @@ Companies.init(
     },
     teamLeader: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     idUser: Sequelize.INTEGER,
     idInterestSkills: Sequelize.INTEGER,

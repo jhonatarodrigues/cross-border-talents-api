@@ -1,6 +1,7 @@
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
 import Moment from 'moment';
+import { Op } from 'sequelize';
 
 import Candidate from '../models/candidate';
 import TalentPool from '../models/talentPool';
@@ -22,10 +23,49 @@ interface ITalentPool {
 }
 
 const Query = {
-  talentPools: async () => {
+  talentPools: async (_: any, { search }: { search?: string }) => {
     const talentPools = await TalentPool.findAll({
       where: {
         status: true,
+        ...(search && {
+          [Op.or]: [
+            {
+              profile: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              education: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              observation: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              softwares: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              experience: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              charge: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              languages: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+          ],
+        }),
       },
       include: [
         {

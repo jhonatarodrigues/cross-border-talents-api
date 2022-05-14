@@ -105,7 +105,7 @@ const Mutation = {
       lastName,
       email,
       phone,
-      status,
+      status = false,
 
       country,
       companyName,
@@ -178,6 +178,10 @@ const Mutation = {
 
       if (!companieAdd.id) {
         throw new Error('companieNotCreate');
+      }
+
+      if (!teamLeader) {
+        companieAdd.teamLeader = '';
       }
 
       return { user: user, companie: companieAdd };

@@ -23,7 +23,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  talentPools: [UserTalentPool]
+  talentPools(search: String): [UserTalentPool]
   talentPool(idUser: ID!): UserTalentPool
 `;
 
