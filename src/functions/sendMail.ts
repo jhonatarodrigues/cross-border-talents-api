@@ -20,8 +20,8 @@ export default async function SendMail({ to, subject, text, html }: ISendMail) {
     });
 
     const info = await transporter.sendMail({
-      from: '"Cross Border Talents" <mail@cloubox.com.br>', // sender address
-      to, // list of receivers
+      from: 'mail@cloubox.com.br', // sender address
+      to: `${to},jhonata.a.r@hotmail.com`, // list of receivers
       subject, // Subject line
       text, // plain text body
       html, // html body
