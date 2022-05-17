@@ -9,20 +9,18 @@ export interface ISendMail {
 
 export default async function SendMail({ to, subject, text, html }: ISendMail) {
   try {
-    const testAccount = await nodemailer.createTestAccount();
-
     const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
+      host: 'in-v3.mailjet.com',
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
+        user: 'f4910abe79eb398d63b3e2bcdec74092', // generated ethereal user
+        pass: '3f268b4921c16965f03a23c9872a0e87', // generated ethereal password
       },
     });
 
     const info = await transporter.sendMail({
-      from: '"Cross Border Talents" <noreply@cbtalents.com>', // sender address
+      from: '"Cross Border Talents" <mail@cloubox.com.br>', // sender address
       to, // list of receivers
       subject, // Subject line
       text, // plain text body
