@@ -1,6 +1,7 @@
 import * as Auth from './auth';
 import * as Candidate from './candidate';
 import * as Companies from './companies';
+import * as Contact from './contact';
 import * as Country from './country';
 import * as InterestSkills from './interestSkills';
 import * as Jobs from './jobs';
@@ -37,5 +38,6 @@ export default {
     ...Testimonials.Mutation,
     ...TalentPool.Mutation,
     ...TalentPoolInterest.Mutation,
+    ...Contact.Mutation,
   },
 };

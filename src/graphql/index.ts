@@ -3,6 +3,7 @@ import { ITypedef, ITypeDefinitions } from 'graphql-tools';
 import * as Auth from './auth';
 import * as Candidate from './candidate';
 import * as Companies from './companies';
+import * as Contact from './contact';
 import * as Country from './country';
 import * as InterestSkill from './interestSkills';
 import * as Jobs from './jobs';
@@ -53,6 +54,7 @@ const Mutation = `
   ${Testimonials.Mutation}
   ${TalentPool.Mutation}
   ${TalentPoolInterest.Mutation}
+  ${Contact.Mutation}
 `;
 
 const Definition: ITypedef = `
