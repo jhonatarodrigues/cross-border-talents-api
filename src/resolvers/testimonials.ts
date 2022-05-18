@@ -1,3 +1,5 @@
+import { Op } from 'sequelize';
+
 import Testimonials from '../models/testimonials';
 
 interface ICreateTestimonials {
@@ -15,6 +17,36 @@ interface IUpdateTestimonials extends ICreateTestimonials {
 const Query = {
   testimonials: () => Testimonials.findAll({ order: [['id', 'DESC']] }),
   testimonial: (_: any, { id }: { id: string }) => Testimonials.findByPk(id),
+
+  testimonialsSearch: async (
+    _: any,
+    {
+      page,
+      itensPerPage,
+      search = '',
+    }: { page: number; itensPerPage: number; search: string },
+  ) => {
+    const total = await Testimonials.findAndCountAll({
+      where: {
+        [Op.or]: [
+          { name: { [Op.like]: `%${search}%` } },
+          { country: { [Op.like]: `%${search}%` } },
+          { testimonial: { [Op.like]: `%${search}%` } },
+        ],
+      },
+      order: [['id', 'DESC']],
+      offset: page ? (page - 1) * itensPerPage : undefined,
+      limit: itensPerPage || undefined,
+    });
+
+    return {
+      testimonials: total.rows,
+      infoPage: {
+        currentPage: page,
+        maxPage: Math.ceil(total.count / itensPerPage),
+      },
+    };
+  },
 };
 
 const Mutation = {

@@ -10,11 +10,16 @@ export const TypeDefs: ITypedef = `
     observations: String
     country: String!
   }
+  type SearchTestimonials {
+    testimonials: [Testimonial]
+    infoPage: InfoPage
+  }
 `;
 
 export const Query = `
   testimonials: [Testimonial!]!
   testimonial(id: ID): Testimonial
+  testimonialsSearch(page: Int, itensPerPage: Int, search: String): SearchTestimonials
 `;
 
 export const Mutation = `
