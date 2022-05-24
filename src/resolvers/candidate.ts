@@ -479,6 +479,7 @@ const Mutation = {
   ) => {
     try {
       const token = request.get('Authorization')?.replace('Bearer ', '');
+
       if (!token) {
         return;
       }
@@ -490,7 +491,7 @@ const Mutation = {
       };
 
       const teamLeader = await TeamLeader.findOne({
-        where: { id: idTeamLeader },
+        where: { idUser: idTeamLeader },
       });
 
       if (!teamLeader) {
@@ -503,10 +504,10 @@ const Mutation = {
         throw new Error('candidateNotFound');
       }
 
-      candidate.update({ teamLeader: idTeamLeader });
+      candidate.update({ teamLeader: teamLeader.id });
       return true;
-    } catch {
-      return false;
+    } catch (error) {
+      return error;
     }
   },
 };
