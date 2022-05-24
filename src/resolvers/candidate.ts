@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
 import { Op } from 'sequelize';
@@ -469,6 +470,43 @@ const Mutation = {
       return { user: user, candidate: candidateAdd };
     } catch (error: any) {
       return error;
+    }
+  },
+  addTeamLeader: async (
+    _: any,
+    { id }: { id: string },
+    { request }: ContextParameters,
+  ) => {
+    try {
+      const token = request.get('Authorization')?.replace('Bearer ', '');
+      if (!token) {
+        return;
+      }
+      const { id: idTeamLeader } = jsonwebtoken.verify(
+        token,
+        String(process.env.JWT_SECRET),
+      ) as {
+        id: string;
+      };
+
+      const teamLeader = await TeamLeader.findOne({
+        where: { id: idTeamLeader },
+      });
+
+      if (!teamLeader) {
+        throw new Error('teamLeaderNotFound');
+      }
+
+      const candidate = await Candidate.findOne({ where: { id } });
+
+      if (!candidate) {
+        throw new Error('candidateNotFound');
+      }
+
+      candidate.update({ teamLeader: idTeamLeader });
+      return true;
+    } catch {
+      return false;
     }
   },
 };

@@ -69,6 +69,7 @@ export const Mutation = `
   ): ReturnCandidate
 
   removeCandidate(id: ID!): Boolean
+  addTeamLeader(id: ID!): Boolean
   updateCandidate(
     id: ID!,
     name: String!, 
