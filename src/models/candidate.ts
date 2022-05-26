@@ -36,7 +36,6 @@ Candidate.init(
     },
     teamLeader: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
     idUser: Sequelize.INTEGER,
     idInterestSkills: Sequelize.INTEGER,
@@ -57,7 +56,6 @@ Candidate.init(
 
     recruiter: {
       type: Sequelize.INTEGER,
-      allowNull: false,
     },
   },
   {
