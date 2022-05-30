@@ -46,19 +46,6 @@ const Query = {
           ],
         }
       : {};
-    const jobs = await Jobs.findAll({
-      where,
-      order: [['id', 'DESC']],
-      include: [
-        {
-          model: InterestSkills,
-          required: false,
-          as: 'interestSkills',
-        },
-      ],
-      offset,
-      limit: itensPerPage || undefined,
-    });
 
     const infoPage = await Jobs.findAndCountAll({
       where,
@@ -73,11 +60,12 @@ const Query = {
     });
 
     return {
-      jobs,
+      jobs: infoPage.rows,
       infoPage: {
         currentPage: page,
         maxPage: Math.ceil(infoPage.count / itensPerPage),
       },
+      numberAllCandidates: infoPage.count,
     };
   },
 };

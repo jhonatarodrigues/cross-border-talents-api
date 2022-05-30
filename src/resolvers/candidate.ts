@@ -151,49 +151,6 @@ const Query = {
       };
     }
 
-    const db = await Candidate.findAll({
-      include: [
-        {
-          model: Users,
-          required: true,
-          as: 'user',
-          where: whereUser,
-        },
-        {
-          model: TeamLeader,
-          required: false,
-          as: 'userTeamLeader',
-          include: [
-            {
-              model: Users,
-              required: false,
-              as: 'user',
-            },
-          ],
-        },
-        {
-          model: Recruiter,
-          required: false,
-          as: 'userRecruiter',
-          include: [
-            {
-              model: Users,
-              required: false,
-              as: 'user',
-            },
-          ],
-        },
-        {
-          model: InterestSkills,
-          required: false,
-          as: 'interestSkills',
-        },
-      ],
-      order: [['id', 'DESC']],
-      where,
-      offset,
-      limit: itensPerPage || undefined,
-    });
     const countCandidate = await Candidate.findAndCountAll({
       include: [
         {
@@ -236,14 +193,13 @@ const Query = {
       where,
     });
 
-    // console.log('\n\n\n\n\n countCandidate', countCandidate);
-
     return {
-      candidates: db,
+      candidates: countCandidate.rows,
       infoPage: {
         currentPage: page,
         maxPage: Math.ceil(countCandidate.count / itensPerPage),
       },
+      numberAllCandidates: countCandidate.count,
     };
   },
 };

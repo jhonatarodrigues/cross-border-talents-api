@@ -18,6 +18,7 @@ export const TypeDefs: ITypedef = `
   type SearchJobs {
     jobs: [Jobs]
     infoPage: InfoPage
+    numberAllCandidates: Int
   }
 `;
 
