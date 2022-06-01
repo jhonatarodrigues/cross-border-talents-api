@@ -1,13 +1,14 @@
 import { ITypedef } from 'graphql-tools';
 
 export const TypeDefs: ITypedef = `
+ type Region {
+    name: String
+    shortCode: String
+ }
   type Country {
-    
-      code: String
-      code3: String
-      name: String
-      number: String
-    
+    countryName: String
+    countryShortCode: String
+    regions: [Region]
   }
 
 `;

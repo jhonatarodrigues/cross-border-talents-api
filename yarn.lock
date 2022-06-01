@@ -2084,6 +2084,11 @@ cors@^2.8.4:
     object-assign "^4"
     vary "^1"
 
+country-region-data@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/country-region-data/-/country-region-data-2.3.0.tgz#a91b49a837014762c8c73a417a3b3aa677389d48"
+  integrity sha512-KrHMw6ClHOgyZLPGbHmSerkphGd5qOpSSVgoU+KXarXQRtRQdM7W+ecHgJ+YoMTMhwag82WrYwhtjNcDBirVpg==
+
 create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
