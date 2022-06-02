@@ -35,20 +35,51 @@ const Query = {
       page,
       itensPerPage,
       search,
-    }: { page: number; itensPerPage: number; search: string },
+
+      department,
+      country,
+      region,
+      typeContract,
+      experienceLevel,
+      language,
+    }: {
+      page: number;
+      itensPerPage: number;
+      search: string;
+      department: string;
+      country: string;
+      region: string;
+      typeContract: string;
+      experienceLevel: string;
+      language: string;
+    },
   ) => {
     const offset = page ? (page - 1) * itensPerPage : undefined;
-    const where = search
-      ? {
-          [Op.or]: [
-            { jobTitle: { [Op.like]: `%${search}%` } },
-            { description: { [Op.like]: `%${search}%` } },
-          ],
-        }
-      : {};
+
+    let where = {};
+    if (
+      search ||
+      department ||
+      country ||
+      region ||
+      typeContract ||
+      experienceLevel ||
+      language
+    ) {
+      where = {
+        [Op.or]: [
+          search ? { jobTitle: { [Op.like]: `%${search}%` } } : {},
+          search ? { description: { [Op.like]: `%${search}%` } } : {},
+          department
+            ? { idInterestSkills: { [Op.like]: `%${department || ''}%` } }
+            : {},
+          country ? { country: country } : {},
+          experienceLevel ? { level: experienceLevel } : {},
+        ],
+      };
+    }
 
     const infoPage = await Jobs.findAndCountAll({
-      where,
       order: [['id', 'DESC']],
       include: [
         {
@@ -57,6 +88,9 @@ const Query = {
           as: 'interestSkills',
         },
       ],
+      where,
+      offset,
+      limit: itensPerPage,
     });
 
     return {

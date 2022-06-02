@@ -25,7 +25,17 @@ export const TypeDefs: ITypedef = `
 export const Query = `
   jobs: [Jobs!]!
   job(id: ID): Jobs
-  jobsSearch(page: Int, itensPerPage: Int, search: String): SearchJobs
+  jobsSearch(
+    page: Int
+    itensPerPage: Int
+    search: String
+    department: String
+    country: String
+    region: String
+    typeContract: String
+    experienceLevel: String
+    language: String
+  ): SearchJobs
 `;
 
 export const Mutation = `
