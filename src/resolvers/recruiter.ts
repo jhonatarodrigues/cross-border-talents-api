@@ -18,13 +18,16 @@ interface IUpdateRecruiter extends ICreateRecruiter {
 }
 
 const Query = {
-  recruiters: async () => {
+  recruiters: async (_: any, { idUser }: { idUser: string }) => {
     const recruiter = await Recruiter.findAll({
       include: [
         {
           model: Users,
-          required: false,
+          required: true,
           as: 'user',
+          where: {
+            ...(idUser ? { id: idUser } : {}),
+          },
         },
         {
           model: TeamLeader,

@@ -17,7 +17,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  recruiters: [Recruiter]
+  recruiters(idUser: String): [Recruiter]
   recruiter(id: ID): Recruiter
 `;
 
