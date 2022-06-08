@@ -41,13 +41,45 @@ interface IUpdateCandidate extends ICreateCandidate {
 }
 
 const Query = {
-  candidates: async () => {
+  candidates: async (
+    _: any,
+    {
+      department,
+      recruiter,
+      search,
+    }: { department: string; recruiter: string; search: string },
+  ) => {
+    let whereUser = {};
+
+    if (search) {
+      whereUser = {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            lastName: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            email: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      };
+    }
+
     const db = await Candidate.findAll({
       include: [
         {
           model: Users,
-          required: false,
+          required: true,
           as: 'user',
+          where: whereUser,
         },
         {
           model: TeamLeader,
@@ -80,6 +112,10 @@ const Query = {
         },
       ],
       order: [['id', 'DESC']],
+      where: {
+        ...(department ? { idInterestSkills: department } : {}),
+        ...(recruiter ? { recruiter: recruiter } : {}),
+      },
     });
 
     return db;
