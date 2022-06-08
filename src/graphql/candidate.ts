@@ -38,7 +38,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  candidates(department: String, recruiter: String, search: String): [Candidate]
+  candidates(candidate: String,department: String, recruiter: String, search: String): [Candidate]
   candidate(id: ID): Candidate
   searchCandidates(page: Int, itensPerPage: Int, search: String): SearchCandidates
 `;

@@ -44,10 +44,16 @@ const Query = {
   candidates: async (
     _: any,
     {
+      candidate,
       department,
       recruiter,
       search,
-    }: { department: string; recruiter: string; search: string },
+    }: {
+      candidate: string;
+      department: string;
+      recruiter: string;
+      search: string;
+    },
   ) => {
     let whereUser = {};
 
@@ -115,6 +121,7 @@ const Query = {
       where: {
         ...(department ? { idInterestSkills: department } : {}),
         ...(recruiter ? { recruiter: recruiter } : {}),
+        ...(candidate ? { id: candidate } : {}),
       },
     });
 
