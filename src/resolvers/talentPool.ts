@@ -70,8 +70,18 @@ const Query = {
       include: [
         {
           model: Candidate,
-          required: false,
+          required: true,
           as: 'candidate',
+          where: {
+            [Op.and]: [
+              {
+                talentPoolVerify: true,
+              },
+              {
+                allowTalentPool: true,
+              },
+            ],
+          },
         },
         {
           model: TeamLeader,
