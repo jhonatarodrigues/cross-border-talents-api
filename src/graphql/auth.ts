@@ -12,4 +12,5 @@ export const Mutation = `
   login (email: String!, password: String!): AuthPayload!
   refreshToken (refreshToken: String!): AuthPayload!
   changePassword (password: String!, newPassword: String!): Boolean!
+  forgotPassword (email: String!): Boolean!
 `;

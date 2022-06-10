@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 
+import RandomPassword from '../functions/randomPassword';
+import SendMail from '../functions/sendMail';
 import Users from '../models/users';
 
 interface IMutationLogin {
@@ -122,6 +124,44 @@ const Mutation = {
       await Users.update({ password: hash }, { where: { id } });
 
       return true;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  forgotPassword: async (_: any, { email }: { email: string }) => {
+    try {
+      const user = await Users.findOne({ where: { email } });
+
+      if (!user) {
+        throw new Error('userNotFound');
+      }
+
+      const newPassword = await RandomPassword({
+        passwordLength: 6,
+      });
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      const userUpdate = await user.update({ password: hashedPassword });
+
+      if (userUpdate) {
+        const mail = await SendMail({
+          to: user.email,
+          subject: 'Change Password',
+          text: 'Change Password',
+          html: `
+        <h1>Change Password</h1>
+        <p>
+         your new password is ${newPassword}
+        </p>
+        
+        `,
+        });
+
+        return true;
+      }
+
+      return false;
     } catch (error: any) {
       return error;
     }
