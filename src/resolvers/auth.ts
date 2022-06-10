@@ -1,5 +1,6 @@
 import { ApolloError } from 'apollo-server-errors';
 import bcrypt from 'bcryptjs';
+import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 
 import Users from '../models/users';
@@ -87,6 +88,41 @@ const Mutation = {
       };
     } catch (error: any) {
       // console.log('\n\n\n\n error ---', error);
+      return error;
+    }
+  },
+  changePassword: async (
+    _: any,
+    { password, newPassword }: { password: string; newPassword: string },
+    { request }: ContextParameters,
+  ) => {
+    try {
+      const token = request.get('Authorization')?.replace('Bearer ', '');
+      if (!token) {
+        return;
+      }
+      const { id } = jsonwebtoken.verify(
+        token,
+        String(process.env.JWT_SECRET),
+      ) as { id: string };
+
+      const user = await Users.findOne({ where: { id } });
+
+      if (!user) {
+        throw new Error('No user with that email');
+      }
+
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+        throw new Error('incorrectPassword');
+      }
+
+      const hash = await bcrypt.hash(newPassword, 10);
+
+      await Users.update({ password: hash }, { where: { id } });
+
+      return true;
+    } catch (error: any) {
       return error;
     }
   },

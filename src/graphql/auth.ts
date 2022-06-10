@@ -11,4 +11,5 @@ export const TypeDefs: ITypedef = `
 export const Mutation = `
   login (email: String!, password: String!): AuthPayload!
   refreshToken (refreshToken: String!): AuthPayload!
+  changePassword (password: String!, newPassword: String!): Boolean!
 `;
