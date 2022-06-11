@@ -47,11 +47,13 @@ const Query = {
       candidate,
       department,
       recruiter,
+      teamLeader,
       search,
     }: {
       candidate: string;
       department: string;
       recruiter: string;
+      teamLeader: string;
       search: string;
     },
   ) => {
@@ -122,6 +124,7 @@ const Query = {
         ...(department ? { idInterestSkills: department } : {}),
         ...(recruiter ? { recruiter: recruiter } : {}),
         ...(candidate ? { id: candidate } : {}),
+        ...(teamLeader ? { teamLeader: teamLeader } : {}),
       },
     });
 

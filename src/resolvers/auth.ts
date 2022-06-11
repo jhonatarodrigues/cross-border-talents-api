@@ -158,6 +158,8 @@ const Mutation = {
         `,
         });
 
+        console.log('send mail', mail);
+
         return true;
       }
 
