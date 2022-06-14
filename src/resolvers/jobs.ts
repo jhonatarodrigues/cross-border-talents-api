@@ -67,7 +67,7 @@ const Query = {
       language
     ) {
       where = {
-        [Op.or]: [
+        [Op.and]: [
           search ? { jobTitle: { [Op.like]: `%${search}%` } } : {},
           search ? { description: { [Op.like]: `%${search}%` } } : {},
           department

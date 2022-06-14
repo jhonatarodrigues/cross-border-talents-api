@@ -28,6 +28,7 @@ export const Query = `
   jobsSearch(
     page: Int
     itensPerPage: Int
+    
     search: String
     department: String
     country: String

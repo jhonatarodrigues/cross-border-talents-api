@@ -23,7 +23,10 @@ interface ITalentPool {
 }
 
 const Query = {
-  talentPools: async (_: any, { search }: { search?: string }) => {
+  talentPools: async (
+    _: any,
+    { search, limit }: { search?: string; limit?: string },
+  ) => {
     const talentPools = await TalentPool.findAll({
       where: {
         status: true,
@@ -95,6 +98,7 @@ const Query = {
         },
       ],
       order: [['id', 'DESC']],
+      ...(limit ? { limit: parseInt(limit, 10) } : null),
     });
 
     return talentPools;
