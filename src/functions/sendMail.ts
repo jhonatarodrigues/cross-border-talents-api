@@ -10,12 +10,12 @@ export interface ISendMail {
 export default async function SendMail({ to, subject, text, html }: ISendMail) {
   try {
     const transporter = nodemailer.createTransport({
-      host: 'in-v3.mailjet.com',
+      host: 'smtp-relay.sendinblue.com',
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: 'f4910abe79eb398d63b3e2bcdec74092', // generated ethereal user
-        pass: '3f268b4921c16965f03a23c9872a0e87', // generated ethereal password
+        user: 'gabriel@minarello.com', // generated ethereal user
+        pass: 'xsmtpsib-eaf3ae32e32adfeed81bd7f4ce50b71d0b0dc01a20cfe2b74591a0a96458bc6c-IbvA8nYSPBKVwCTJ', // generated ethereal password
       },
     });
 
