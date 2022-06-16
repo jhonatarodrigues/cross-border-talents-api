@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 import express, { Response } from 'express';
+import fs from 'fs';
 import { GraphQLServer } from 'graphql-yoga';
 
 import Schema from './graphql';
@@ -20,6 +21,10 @@ const server = new GraphQLServer({
     authenticated: verifyJWT(req),
   }),
 });
+
+if (!fs.existsSync('./uploads')) {
+  fs.mkdirSync('./uploads');
+}
 
 server.post('/upload', Multer.single('file'), (req: any, res: Response) => {
   if (!req.file) {

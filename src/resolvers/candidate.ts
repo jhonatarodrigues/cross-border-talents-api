@@ -379,12 +379,23 @@ const Mutation = {
         throw new Error('userNotFound');
       }
 
-      await candidate.destroy();
-      await user.destroy();
+      await candidate.destroy().catch((err: any) => {
+        if (err.message.indexOf('foreign key constraint fails') > -1) {
+          throw new Error('candidateHasRelations');
+        }
+        throw new Error(err);
+      });
+
+      await user.destroy().catch((err: any) => {
+        if (err.message.indexOf('foreign key constraint fails') > -1) {
+          throw new Error('candidateHasRelations');
+        }
+        throw new Error(err);
+      });
 
       return true;
     } catch (error: any) {
-      console.log('\n\n\n\n error', error);
+      console.log('\n\n\n\n error', error.info);
       return error;
     }
   },
