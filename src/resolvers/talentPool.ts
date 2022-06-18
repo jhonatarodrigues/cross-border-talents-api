@@ -43,7 +43,13 @@ const Query = {
       where: {
         status: true,
         [Op.and]: [
-          language ? { languages: language } : {},
+          language
+            ? {
+                languages: {
+                  [Op.like]: `%${language}%`,
+                },
+              }
+            : {},
           search
             ? {
                 [Op.or]: [
