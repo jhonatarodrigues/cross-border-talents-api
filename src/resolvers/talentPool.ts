@@ -25,50 +25,67 @@ interface ITalentPool {
 const Query = {
   talentPools: async (
     _: any,
-    { search, limit }: { search?: string; limit?: string },
+    {
+      search,
+      limit,
+      country,
+      department,
+      language,
+    }: {
+      search?: string;
+      limit?: string;
+      country?: string;
+      department?: string;
+      language?: string;
+    },
   ) => {
     const talentPools = await TalentPool.findAll({
       where: {
         status: true,
-        ...(search && {
-          [Op.or]: [
-            {
-              profile: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              education: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              observation: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              softwares: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              experience: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              charge: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              languages: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-          ],
-        }),
+        [Op.and]: [
+          language ? { languages: language } : {},
+          search
+            ? {
+                [Op.or]: [
+                  {
+                    profile: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    education: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    observation: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    softwares: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    experience: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    charge: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                  {
+                    languages: {
+                      [Op.like]: `%${search}%`,
+                    },
+                  },
+                ],
+              }
+            : {},
+        ],
       },
       include: [
         {
@@ -83,6 +100,8 @@ const Query = {
               {
                 allowTalentPool: true,
               },
+              country ? { country: country } : {},
+              department ? { idInterestSkills: department } : {},
             ],
           },
         },
