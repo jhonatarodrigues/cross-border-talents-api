@@ -172,8 +172,8 @@ const Mutation = {
         instagram,
         linkedin,
 
-        teamLeader,
-        idInterestSkills,
+        ...(teamLeader ? { teamLeader } : {}),
+        ...(idInterestSkills ? { idInterestSkills } : {}),
       });
 
       if (!companieAdd.id) {
@@ -265,27 +265,33 @@ const Mutation = {
         status,
       });
 
-      const companieAdd = await companie.update({
-        idUser: user.id,
-        companyLogo,
-        country,
-        companyName,
+      let companieAdd = null;
 
-        industry,
-        site,
-        size,
-        address1,
-        address2,
-        city,
-        facebook,
-        instagram,
-        linkedin,
+      try {
+        companieAdd = await companie.update({
+          idUser: user.id,
+          companyLogo,
+          country,
+          companyName,
 
-        teamLeader,
-        idInterestSkills,
-      });
+          industry,
+          site,
+          size,
+          address1,
+          address2,
+          city,
+          facebook,
+          instagram,
+          linkedin,
 
-      if (!companieAdd.id) {
+          ...(teamLeader ? { teamLeader } : {}),
+          ...(idInterestSkills ? { idInterestSkills } : {}),
+        });
+      } catch (error: any) {
+        user.destroy();
+      }
+
+      if (!companieAdd || !companieAdd.id) {
         throw new Error('companieNotUpdate');
       }
 

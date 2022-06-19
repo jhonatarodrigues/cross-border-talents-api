@@ -4,7 +4,7 @@ export const TypeDefs: ITypedef = `
   type Companie {
     id: ID!
     idUser: ID!
-    idInterestSkills: ID!
+    idInterestSkills: ID
     
     companyLogo: String
     country: String
@@ -59,7 +59,7 @@ export const Mutation = `
     linkedin: String,
     
     teamLeader: String, 
-    idInterestSkills: String!
+    idInterestSkills: String
   ): ReturnCompanie
 
   removeCompanie(id: ID!): Boolean
@@ -85,6 +85,6 @@ export const Mutation = `
     linkedin: String,
     
     teamLeader: String, 
-    idInterestSkills: String!
+    idInterestSkills: String
   ): ReturnCompanie
 `;
