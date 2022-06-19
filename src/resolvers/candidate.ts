@@ -310,30 +310,35 @@ const Mutation = {
       });
 
       if (!user.id) {
-        throw new Error('norCreateuser');
+        throw new Error('notCreateUser');
       }
 
-      const candidateAdd = await Candidate.create({
-        idUser: user.id,
-        profilePicture,
-        socialMedia,
-        birthDate: newBirthDate,
-        country,
-        gender,
-        nativeLanguage,
-        cvUpload,
-        allowTalentPool,
-        allowContactMe,
-        privacityPolicy,
-        englishLevel,
-        observations,
+      let candidateAdd = null;
+      try {
+        candidateAdd = await Candidate.create({
+          idUser: user.id,
+          profilePicture,
+          socialMedia,
+          birthDate: newBirthDate,
+          country,
+          gender,
+          nativeLanguage,
+          cvUpload,
+          allowTalentPool,
+          allowContactMe,
+          privacityPolicy,
+          englishLevel,
+          observations,
 
-        recruiter,
-        teamLeader,
-        idInterestSkills,
-      });
+          ...(teamLeader ? { teamLeader } : {}),
+          ...(recruiter ? { recruiter } : {}),
+          idInterestSkills,
+        });
+      } catch (error) {
+        user.destroy();
+      }
 
-      if (!candidateAdd.id) {
+      if (!candidateAdd || !candidateAdd.id) {
         throw new Error('candidateNotCreate');
       }
 
