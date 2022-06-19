@@ -480,8 +480,8 @@ const Mutation = {
         englishLevel,
         observations,
 
-        recruiter,
-        teamLeader,
+        ...(teamLeader ? { teamLeader } : {}),
+        ...(recruiter ? { recruiter } : {}),
         idInterestSkills,
       });
 
