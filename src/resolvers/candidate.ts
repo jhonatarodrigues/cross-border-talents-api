@@ -528,6 +528,44 @@ const Mutation = {
       return error;
     }
   },
+  addRecruiter: async (
+    _: any,
+    { id }: { id: string },
+    { request }: ContextParameters,
+  ) => {
+    try {
+      const token = request.get('Authorization')?.replace('Bearer ', '');
+
+      if (!token) {
+        return;
+      }
+      const { id: idTeamLeader } = jsonwebtoken.verify(
+        token,
+        String(process.env.JWT_SECRET),
+      ) as {
+        id: string;
+      };
+
+      const teamLeader = await Recruiter.findOne({
+        where: { idUser: idTeamLeader },
+      });
+
+      if (!teamLeader) {
+        throw new Error('recruiterNotFound');
+      }
+
+      const candidate = await Candidate.findOne({ where: { id } });
+
+      if (!candidate) {
+        throw new Error('candidateNotFound');
+      }
+
+      candidate.update({ recruiter: teamLeader.id });
+      return true;
+    } catch (error) {
+      return error;
+    }
+  },
 };
 
 export { Query, Mutation };
