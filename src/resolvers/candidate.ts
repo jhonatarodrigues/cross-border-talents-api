@@ -122,9 +122,13 @@ const Query = {
       order: [['id', 'DESC']],
       where: {
         ...(department ? { idInterestSkills: department } : {}),
-        ...(recruiter ? { recruiter: recruiter } : {}),
+        ...(recruiter
+          ? { [Op.or]: [{ recruiter: recruiter }, { recruiter: null }] }
+          : { recruiter: null }),
         ...(candidate ? { id: candidate } : {}),
-        ...(teamLeader ? { teamLeader: teamLeader } : {}),
+        ...(teamLeader
+          ? { [Op.or]: [{ teamLeader: teamLeader }, { teamLeader: null }] }
+          : { teamLeader: null }),
       },
     });
 
