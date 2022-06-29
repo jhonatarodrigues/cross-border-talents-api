@@ -31,12 +31,14 @@ const Query = {
       country,
       department,
       language,
+      teamLeader,
     }: {
       search?: string;
       limit?: string;
       country?: string;
       department?: string;
       language?: string;
+      teamLeader: string;
     },
   ) => {
     const talentPools = await TalentPool.findAll({
@@ -91,6 +93,7 @@ const Query = {
                 ],
               }
             : {},
+          teamLeader ? { teamLeader: teamLeader } : {},
         ],
       },
       include: [
