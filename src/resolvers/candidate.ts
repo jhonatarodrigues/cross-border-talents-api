@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 
 import SendMail from '../functions/sendMail';
 import Candidate from '../models/candidate';
@@ -81,6 +81,28 @@ const Query = {
       };
     }
 
+    let whereRecruiter = {};
+
+    if (recruiter) {
+      whereRecruiter = {
+        [Op.or]: [{ recruiter: recruiter }, { recruiter: null }],
+      };
+    }
+    if (!recruiter && !search) {
+      whereRecruiter = { recruiter: null };
+    }
+
+    let whereTeamLeader = {};
+
+    if (teamLeader) {
+      whereTeamLeader = {
+        [Op.or]: [{ teamLeader: teamLeader }, { teamLeader: null }],
+      };
+    }
+    if (!teamLeader && !search) {
+      whereTeamLeader = { teamLeader: null };
+    }
+
     const db = await Candidate.findAll({
       include: [
         {
@@ -122,13 +144,10 @@ const Query = {
       order: [['id', 'DESC']],
       where: {
         ...(department ? { idInterestSkills: department } : {}),
-        ...(recruiter
-          ? { [Op.or]: [{ recruiter: recruiter }, { recruiter: null }] }
-          : { recruiter: null }),
         ...(candidate ? { id: candidate } : {}),
-        ...(teamLeader
-          ? { [Op.or]: [{ teamLeader: teamLeader }, { teamLeader: null }] }
-          : { teamLeader: null }),
+
+        ...whereRecruiter,
+        ...whereTeamLeader,
       },
     });
 

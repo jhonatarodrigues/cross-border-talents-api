@@ -66,13 +66,8 @@ const Query = {
 
     return db;
   },
-  companie: (_: any, { id }: { id: string }) => {
-    if (!id) {
-      throw new Error('companieIdNotFound');
-    }
-
-    const db = Companies.findOne({
-      where: { id },
+  companie: async (_: any, { id, idUser }: { id: string; idUser: string }) => {
+    const db = await Companies.findOne({
       include: [
         {
           model: Users,
@@ -80,10 +75,16 @@ const Query = {
           as: 'user',
         },
         {
-          model: Users,
+          model: TeamLeader,
           required: false,
-          attributes: ['id', 'name', 'email', 'phone', 'status', 'accessLevel'],
           as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
         {
           model: InterestSkills,
@@ -91,6 +92,11 @@ const Query = {
           as: 'interestSkills',
         },
       ],
+      order: [['id', 'DESC']],
+      where: {
+        ...(id ? { id: id } : {}),
+        ...(idUser ? { idUser: idUser } : {}),
+      },
     });
 
     return db;

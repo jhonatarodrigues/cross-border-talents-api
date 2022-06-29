@@ -33,7 +33,7 @@ export const TypeDefs: ITypedef = `
 
 export const Query = `
   companies: [Companie]
-  companie(id: ID): Companie
+  companie(id: ID, idUser: ID): Companie
 `;
 
 export const Mutation = `
