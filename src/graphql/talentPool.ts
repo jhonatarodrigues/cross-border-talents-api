@@ -23,7 +23,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  talentPools(search: String, limit: String, country: String, department: String, language: String, teamLeader: string): [UserTalentPool]
+  talentPools(search: String, limit: String, country: String, department: String, language: String, teamLeader: String): [UserTalentPool]
   talentPool(idUser: ID!): UserTalentPool
 `;
 
