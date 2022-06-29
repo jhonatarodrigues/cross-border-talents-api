@@ -93,7 +93,7 @@ const Query = {
                 ],
               }
             : {},
-          teamLeader ? { teamLeader: teamLeader } : {},
+          teamLeader ? { idTeamLeader: teamLeader } : {},
         ],
       },
       include: [
