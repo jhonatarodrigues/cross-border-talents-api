@@ -67,6 +67,7 @@ export const Mutation = `
     recruiter: String,
     teamLeader: String,
     idInterestSkills: String!,
+    talentPoolVerify: Boolean,
   ): ReturnCandidate
 
   removeCandidate(id: ID!): Boolean
@@ -95,5 +96,6 @@ export const Mutation = `
     recruiter: String,
     teamLeader: String,
     idInterestSkills: String!,
+    talentPoolVerify: Boolean,
   ): ReturnCandidate
 `;

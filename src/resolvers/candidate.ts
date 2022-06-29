@@ -34,6 +34,7 @@ interface ICreateCandidate {
   recruiter: string;
   teamLeader: string;
   idInterestSkills: string;
+  talentPoolVerify: boolean;
 }
 
 interface IUpdateCandidate extends ICreateCandidate {
@@ -299,6 +300,7 @@ const Mutation = {
       recruiter,
       teamLeader,
       idInterestSkills,
+      talentPoolVerify,
     }: ICreateCandidate,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
@@ -356,6 +358,8 @@ const Mutation = {
           ...(teamLeader ? { teamLeader } : {}),
           ...(recruiter ? { recruiter } : {}),
           idInterestSkills,
+
+          talentPoolVerify,
         });
       } catch (error) {
         user.destroy();
@@ -452,6 +456,7 @@ const Mutation = {
       recruiter,
       teamLeader,
       idInterestSkills,
+      talentPoolVerify,
     }: IUpdateCandidate,
   ) => {
     const newBirthDate = Moment(birthDate).format('YYYY-MM-DD');
@@ -506,6 +511,8 @@ const Mutation = {
         ...(teamLeader ? { teamLeader } : {}),
         ...(recruiter ? { recruiter } : {}),
         idInterestSkills,
+
+        talentPoolVerify,
       });
 
       return { user: user, candidate: candidateAdd };
