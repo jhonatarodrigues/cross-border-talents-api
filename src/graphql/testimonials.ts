@@ -17,7 +17,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  testimonials: [Testimonial!]!
+  testimonials(id: ID): [Testimonial!]!
   testimonial(id: ID): Testimonial
   testimonialsSearch(page: Int, itensPerPage: Int, search: String): SearchTestimonials
 `;

@@ -15,7 +15,13 @@ interface IUpdateTestimonials extends ICreateTestimonials {
 }
 
 const Query = {
-  testimonials: () => Testimonials.findAll({ order: [['id', 'DESC']] }),
+  testimonials: (_: any, { id }: { id: string }) =>
+    Testimonials.findAll({
+      order: [['id', 'DESC']],
+      where: {
+        ...(id ? { id: id } : {}),
+      },
+    }),
   testimonial: (_: any, { id }: { id: string }) => Testimonials.findByPk(id),
 
   testimonialsSearch: async (
