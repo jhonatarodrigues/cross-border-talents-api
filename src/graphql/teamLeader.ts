@@ -11,7 +11,7 @@ export const TypeDefs: ITypedef = `
 
 export const Query = `
   teamLeaders: [TeamLeader!]!
-  teamLeader(id: ID): TeamLeader
+  teamLeader(id: ID, idUser: ID): TeamLeader
 `;
 
 export const Mutation = `

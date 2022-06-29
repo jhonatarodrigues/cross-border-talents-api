@@ -30,9 +30,15 @@ const Query = {
 
     return teamLeaders;
   },
-  teamLeader: async (_: any, { id }: { id: string }) => {
+  teamLeader: async (
+    _: any,
+    { id, idUser }: { id: string; idUser: string },
+  ) => {
     const teamLeaders = await TeamLeader.findOne({
-      where: { id: id },
+      where: {
+        ...(id ? { id: id } : {}),
+        ...(idUser ? { idUser: idUser } : {}),
+      },
       include: [
         {
           model: Users,
