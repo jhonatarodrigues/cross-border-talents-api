@@ -6,6 +6,7 @@ import * as Contract from './contract';
 import * as Country from './country';
 import * as InterestSkills from './interestSkills';
 import * as Jobs from './jobs';
+import * as MailChimp from './mailChimp';
 import * as Recruiter from './recruiter';
 import * as TalentPool from './talentPool';
 import * as TalentPoolInterest from './talentPoolInterest';
@@ -27,6 +28,7 @@ export default {
     ...TalentPool.Query,
     ...TalentPoolInterest.Query,
     ...Contract.Query,
+    ...MailChimp.Query,
   },
   Mutation: {
     ...User.Mutation,
@@ -41,5 +43,6 @@ export default {
     ...TalentPool.Mutation,
     ...TalentPoolInterest.Mutation,
     ...Contact.Mutation,
+    ...MailChimp.Mutation,
   },
 };

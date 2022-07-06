@@ -8,6 +8,7 @@ import * as Contract from './contract';
 import * as Country from './country';
 import * as InterestSkill from './interestSkills';
 import * as Jobs from './jobs';
+import * as MailChimp from './mailchimp';
 import * as Recruiter from './recruiter';
 import * as TalentPool from './talentPool';
 import * as TalentPoolInterest from './talentPoolInterest';
@@ -29,6 +30,7 @@ const TypeDefs = `
   ${TalentPool.TypeDefs}
   ${TalentPoolInterest.TypeDefs}
   ${Contract.TypeDefs}
+  ${MailChimp.TypeDefs}
 `;
 
 const Query = `
@@ -44,6 +46,7 @@ const Query = `
   ${TalentPool.Query}
   ${TalentPoolInterest.Query}
   ${Contract.Query}
+  ${MailChimp.Query}
 `;
 const Mutation = `
   ${User.Mutation}
@@ -58,7 +61,7 @@ const Mutation = `
   ${TalentPool.Mutation}
   ${TalentPoolInterest.Mutation}
   ${Contact.Mutation}
-  
+  ${MailChimp.TypeDefs}
 `;
 
 const Definition: ITypedef = `
