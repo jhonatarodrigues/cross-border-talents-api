@@ -4,6 +4,7 @@ export const TypeDefs: ITypedef = `
   type InterestSkills {
     id: ID!
     name: String!
+    internal: Boolean
   }
 `;
 
@@ -13,7 +14,7 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createInterestSkill(name: String!): InterestSkills
+  createInterestSkill(name: String!, internal: Boolean): InterestSkills
   removeInterestSkill(id: ID!): Boolean
-  updateInterestSkill(id: ID!, name: String!): InterestSkills
+  updateInterestSkill(id: ID!, name: String!, internal: Boolean): InterestSkills
 `;

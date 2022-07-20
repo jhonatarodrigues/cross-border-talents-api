@@ -2,6 +2,7 @@ import InterestSkills from '../models/intrestSkills';
 
 interface ICreateInterestSkills {
   name: string;
+  internal: boolean;
 }
 
 const Query = {
@@ -11,7 +12,10 @@ const Query = {
 };
 
 const Mutation = {
-  createInterestSkill: async (_: any, { name }: ICreateInterestSkills) => {
+  createInterestSkill: async (
+    _: any,
+    { name, internal }: ICreateInterestSkills,
+  ) => {
     try {
       const verifyUser = await InterestSkills.findOne({ where: { name } });
       if (verifyUser && verifyUser.id) {
@@ -20,6 +24,7 @@ const Mutation = {
 
       const returnInterest = await InterestSkills.create({
         name,
+        internal,
       });
 
       return returnInterest;
@@ -40,14 +45,14 @@ const Mutation = {
       return error;
     }
   },
-  updateInterestSkill: async (_: any, { id, name }: any) => {
+  updateInterestSkill: async (_: any, { id, name, internal }: any) => {
     try {
       const interest = await InterestSkills.findByPk(id);
       if (!interest) {
         throw new Error('interestSkillsNotFound');
       }
 
-      await interest.update({ name });
+      await interest.update({ name, internal });
       return interest;
     } catch (error: any) {
       return error;

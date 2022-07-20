@@ -16,6 +16,7 @@ InterestSkills.init(
       allowNull: false,
     },
     name: Sequelize.STRING,
+    internal: Sequelize.STRING,
   },
   {
     sequelize: db,
