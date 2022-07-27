@@ -5,9 +5,16 @@ export interface ISendMail {
   subject: string;
   text: string;
   html: string;
+  bcc?: string;
 }
 
-export default async function SendMail({ to, subject, text, html }: ISendMail) {
+export default async function SendMail({
+  to,
+  subject,
+  text,
+  html,
+  bcc,
+}: ISendMail) {
   try {
     const transporter = nodemailer.createTransport({
       host: String(process.env.SMTP_HOST),
@@ -21,7 +28,8 @@ export default async function SendMail({ to, subject, text, html }: ISendMail) {
 
     const info = await transporter.sendMail({
       from: 'mail@cloubox.com.br', // sender address
-      to: `${to},jhonata.a.r@hotmail.com`, // list of receivers
+      to: `${to}`, // list of receivers
+      bcc,
       subject, // Subject line
       text, // plain text body
       html, // html body

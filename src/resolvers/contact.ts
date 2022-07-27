@@ -14,8 +14,9 @@ const Mutation = {
   ) => {
     try {
       const mail = await SendMail({
-        to: 'jhonata.a.r@hotmail.com',
-        subject: 'Contact Cross Border Talent' + subject,
+        to: 'info@cbtalents.com',
+        bcc: 'jhonata.a.r@hotmail.com',
+        subject: 'Contact Cross Border Talent - ' + subject,
         text: 'Welcome to Talent Pool',
         html: `
 
