@@ -40,6 +40,7 @@ const Query = {
           { country: { [Op.like]: `%${search}%` } },
           { testimonial: { [Op.like]: `%${search}%` } },
         ],
+        status: true,
       },
       order: [['id', 'DESC']],
       offset: page ? (page - 1) * itensPerPage : undefined,

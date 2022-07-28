@@ -9,6 +9,7 @@ export const TypeDefs: ITypedef = `
     testimonial: String!
     observations: String
     country: String!
+    status: Boolean
   }
   type SearchTestimonials {
     testimonials: [Testimonial]
