@@ -15,7 +15,7 @@ interface IMutationLogin {
 const Mutation = {
   login: async (_: any, { email, password }: IMutationLogin) => {
     try {
-      const user = await Users.findOne({ where: { email } });
+      const user = await Users.findOne({ where: { email, status: true } });
 
       if (!user) {
         throw new Error('No user with that email');
