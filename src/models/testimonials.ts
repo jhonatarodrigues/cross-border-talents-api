@@ -24,6 +24,7 @@ Testimonials.init(
     testimonial: Sequelize.TEXT,
     date: Sequelize.DATE,
     observations: Sequelize.STRING,
+    status: Sequelize.BOOLEAN,
     country: Sequelize.STRING,
   },
   {

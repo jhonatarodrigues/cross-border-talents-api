@@ -9,6 +9,7 @@ interface ICreateTestimonials {
   testimonial: string;
   observations: string;
   country: string;
+  status: boolean;
 }
 interface IUpdateTestimonials extends ICreateTestimonials {
   id: string;
@@ -65,6 +66,7 @@ const Mutation = {
       country,
       testimonial,
       picture,
+      status,
     }: ICreateTestimonials,
   ) => {
     try {
@@ -75,6 +77,7 @@ const Mutation = {
         country,
         testimonial,
         picture,
+        status,
       });
 
       return response;
@@ -105,6 +108,7 @@ const Mutation = {
       country,
       testimonial,
       picture,
+      status,
     }: IUpdateTestimonials,
   ) => {
     try {
@@ -121,6 +125,7 @@ const Mutation = {
         country,
         testimonial,
         picture,
+        status,
       });
 
       return response;

@@ -23,7 +23,7 @@ export const Query = `
 `;
 
 export const Mutation = `
-  createTestimonial(name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!): Testimonial
+  createTestimonial(name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!, status: Boolean): Testimonial
   removeTestimonial(id: ID!): Boolean
-  updateTestimonial(id: ID!, name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!): Testimonial
+  updateTestimonial(id: ID!, name: String!, picture: String!, date: String!, testimonial: String!, observations: String, country: String!,  status: Boolean): Testimonial
 `;
