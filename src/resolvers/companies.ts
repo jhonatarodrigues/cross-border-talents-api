@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 
+import SendMail from '../functions/sendMail';
 import Companies from '../models/companies';
 import InterestSkills from '../models/intrestSkills';
 import TeamLeader from '../models/teamLeader';
@@ -28,6 +29,8 @@ interface ICreateCompanie {
 
   teamLeader: string;
   idInterestSkills: string;
+
+  sendMailAdmins: boolean;
 }
 
 interface IUpdateCompanie extends ICreateCompanie {
@@ -129,6 +132,8 @@ const Mutation = {
 
       teamLeader,
       idInterestSkills,
+
+      sendMailAdmins,
     }: ICreateCompanie,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
@@ -188,6 +193,42 @@ const Mutation = {
 
       if (!teamLeader) {
         companieAdd.teamLeader = '';
+      }
+
+      if (companieAdd && sendMailAdmins) {
+        const usersAdmin = await Users.findAll({
+          where: {
+            status: true,
+            accessLevel: 1,
+          },
+        });
+        const emails: string[] = [];
+        usersAdmin.map((item) => {
+          if (item.email) {
+            emails.push(item.email);
+          }
+
+          return item;
+        });
+
+        const mail = await SendMail({
+          to: emails.toString(),
+          subject: 'New companie',
+          text: '',
+          html: `
+              <h1>Have New company awaiting for your approval</h1>
+              <p>
+               Company Name: ${companyName}
+               Name: ${name},
+               Last Name: ${lastName},
+               Email: ${email},
+               Phone: ${phone},
+              </p>
+        
+        `,
+        });
+
+        console.log('send mail', mail);
       }
 
       return { user: user, companie: companieAdd };

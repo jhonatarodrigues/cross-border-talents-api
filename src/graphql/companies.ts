@@ -60,6 +60,8 @@ export const Mutation = `
     
     teamLeader: String, 
     idInterestSkills: String
+
+    sendMailAdmins: Boolean
   ): ReturnCompanie
 
   removeCompanie(id: ID!): Boolean
