@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 import SendMail from '../functions/sendMail';
 import Companies from '../models/companies';
@@ -196,6 +197,12 @@ const Mutation = {
       }
 
       if (companieAdd && sendMailAdmins) {
+        const token = await jwt.sign(
+          { id: user.id, email: user.email, idBusiness: companieAdd.id },
+          String(process.env.JWT_SECRET),
+          { expiresIn: '7d' },
+        );
+
         const usersAdmin = await Users.findAll({
           where: {
             status: true,
@@ -224,6 +231,11 @@ const Mutation = {
                Email: ${email},
                Phone: ${phone},
               </p>
+              <p>Acesse o link para ativar.</p>
+
+              <a href="http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}">
+                http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}
+              </a>
         
         `,
         });
@@ -343,6 +355,34 @@ const Mutation = {
       }
 
       return { user: user, companie: companieAdd };
+    } catch (error: any) {
+      return error;
+    }
+  },
+  AcceptBusiness: async (_: any, { token }: { token: string }) => {
+    try {
+      const tokenDecrypt = jwt.verify(token, String(process.env.JWT_SECRET));
+
+      const tokenDec = tokenDecrypt as {
+        id: string;
+        email: string;
+        idBusiness: string;
+      };
+
+      const companie = await Users.findOne({
+        where: {
+          id: tokenDec.id,
+        },
+      });
+
+      if (companie?.id) {
+        companie.update({
+          status: true,
+        });
+
+        return true;
+      }
+      return false;
     } catch (error: any) {
       return error;
     }

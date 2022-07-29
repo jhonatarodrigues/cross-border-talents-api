@@ -89,4 +89,5 @@ export const Mutation = `
     teamLeader: String, 
     idInterestSkills: String
   ): ReturnCompanie
+  AcceptBusiness(token: String!): Boolean
 `;
