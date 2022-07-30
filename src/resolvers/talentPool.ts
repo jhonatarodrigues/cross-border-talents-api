@@ -6,6 +6,7 @@ import { Op } from 'sequelize';
 import Candidate from '../models/candidate';
 import TalentPool from '../models/talentPool';
 import TeamLeader from '../models/teamLeader';
+import Users from '../models/users';
 import User from '../models/users';
 
 interface ITalentPool {
@@ -118,6 +119,13 @@ const Query = {
           model: TeamLeader,
           required: false,
           as: 'teamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
         {
           model: User,
