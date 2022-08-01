@@ -43,4 +43,5 @@ export const Mutation = `
   createJobs(idInterestSkills: String!, jobTitle: String!, level: String, country: String, date:String, description: String): Jobs
   removeJobs(id: ID!): Boolean
   updateJobs(id: ID!, idInterestSkills: String!, date:String, jobTitle: String!, level: String, country: String, description: String): Jobs
-  `;
+  applyNow(idJob: ID!, name: String!, email: String!, phone: String!): Boolean
+`;

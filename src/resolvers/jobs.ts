@@ -12,6 +12,13 @@ interface ICreateJobs {
   date: string;
 }
 
+interface IApplyNow {
+  idJob: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 interface IUpdateJobs extends ICreateJobs {
   id: string;
 }
@@ -175,6 +182,38 @@ const Mutation = {
       });
 
       return jobs;
+    } catch (error: any) {
+      return error;
+    }
+  },
+  applyNow: async (_: any, { idJob, name, email, phone }: IApplyNow) => {
+    console.log('aaaa', idJob);
+    try {
+      const job = await Jobs.findOne({
+        where: {
+          id: idJob,
+        },
+      });
+      // console.log('\n\n\n job --', job.);
+
+      // const mail = await SendMail({
+      //   to: 'info@cbtalents.com',
+      //   bcc: 'jhonata.a.r@hotmail.com',
+      //   subject: 'Contact Cross Border Talent - ' + subject,
+      //   text: 'Welcome to Talent Pool',
+      //   html: `
+
+      // <p>Name: ${name}</p>
+      // <p>Email: ${email}</p>
+      // <p>Message: ${message}</p>
+      // `,
+      // });
+
+      // console.log('\n\n\n\n\n mail', mail);
+
+      // if (mail) {
+      //   return true;
+      // }
     } catch (error: any) {
       return error;
     }
