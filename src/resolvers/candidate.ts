@@ -508,8 +508,8 @@ const Mutation = {
         englishLevel,
         observations,
 
-        ...(teamLeader ? { teamLeader } : {}),
-        ...(recruiter ? { recruiter } : {}),
+        teamLeader: teamLeader || null,
+        recruiter: recruiter || null,
         idInterestSkills,
 
         talentPoolVerify,
