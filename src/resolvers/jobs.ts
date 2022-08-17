@@ -10,6 +10,8 @@ interface ICreateJobs {
   country: string;
   description: string;
   date: string;
+  requirements: string;
+  benefits: string;
 }
 
 interface IApplyNow {
@@ -121,6 +123,8 @@ const Mutation = {
       country,
       date,
       description,
+      requirements,
+      benefits,
     }: ICreateJobs,
   ) => {
     try {
@@ -131,6 +135,8 @@ const Mutation = {
         country,
         description,
         date,
+        requirements,
+        benefits,
       });
 
       return jobs;
@@ -163,6 +169,8 @@ const Mutation = {
       country,
       date,
       description,
+      requirements,
+      benefits,
     }: IUpdateJobs,
   ) => {
     try {
@@ -179,6 +187,8 @@ const Mutation = {
         country,
         description,
         date,
+        requirements,
+        benefits,
       });
 
       return jobs;

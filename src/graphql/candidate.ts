@@ -19,6 +19,9 @@ export const TypeDefs: ITypedef = `
     englishLevel: String
     observations: String
     talentPoolVerify: Boolean
+    
+    createdAt: String
+    updatedAt: String
 
     userRecruiter: Recruiter
     userTeamLeader: TeamLeader

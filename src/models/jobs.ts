@@ -29,6 +29,8 @@ Jobs.init(
     country: Sequelize.STRING,
     description: Sequelize.TEXT,
     date: Sequelize.DATE,
+    requirements: Sequelize.TEXT,
+    benefits: Sequelize.TEXT,
   },
   {
     sequelize: db,
