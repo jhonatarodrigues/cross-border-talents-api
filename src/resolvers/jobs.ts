@@ -1,6 +1,8 @@
 import { Op } from 'sequelize';
 
 import InterestSkills from '../models/intrestSkills';
+import Recruiter from '../models/recruiter';
+import Users from '../models/users';
 import Jobs from '../models/jobs';
 
 interface ICreateJobs {
@@ -12,6 +14,7 @@ interface ICreateJobs {
   date: string;
   requirements: string;
   benefits: string;
+  recruiter: string;
 }
 
 interface IApplyNow {
@@ -34,6 +37,18 @@ const Query = {
           model: InterestSkills,
           required: false,
           as: 'interestSkills',
+        },
+        {
+          model: Recruiter,
+          required: false,
+          as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
         },
       ],
     }),
@@ -125,6 +140,7 @@ const Mutation = {
       description,
       requirements,
       benefits,
+      recruiter
     }: ICreateJobs,
   ) => {
     try {
@@ -137,6 +153,7 @@ const Mutation = {
         date,
         requirements,
         benefits,
+        recruiter
       });
 
       return jobs;
@@ -171,6 +188,7 @@ const Mutation = {
       description,
       requirements,
       benefits,
+      recruiter
     }: IUpdateJobs,
   ) => {
     try {
@@ -189,6 +207,7 @@ const Mutation = {
         date,
         requirements,
         benefits,
+        recruiter
       });
 
       return jobs;

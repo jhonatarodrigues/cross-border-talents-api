@@ -12,6 +12,7 @@ export const TypeDefs: ITypedef = `
     date: String
     requirements: String
     benefits: String
+    userRecruiter: Recruiter
   }
   type InfoPage{
     currentPage: Int
@@ -43,9 +44,9 @@ export const Query = `
 
 export const Mutation = `
   createJobs(idInterestSkills: String!, jobTitle: String!, level: String, country: String, date:String, description: String, requirements: String
-    benefits: String): Jobs
+    benefits: String, recruiter: String): Jobs
   removeJobs(id: ID!): Boolean
   updateJobs(id: ID!, idInterestSkills: String!, date:String, jobTitle: String!, level: String, country: String, description: String, requirements: String
-    benefits: String): Jobs
+    benefits: String, recruiter: String): Jobs
   applyNow(idJob: ID!, name: String!, email: String!, phone: String!): Boolean
 `;
