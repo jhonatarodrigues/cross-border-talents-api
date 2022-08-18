@@ -149,3 +149,5 @@ build/
 
 .env.production
 .env.old.production
+
+config/
