@@ -27,7 +27,7 @@ export default async function SendMail({
     });
 
     const info = await transporter.sendMail({
-      from: 'mail@cloubox.com.br', // sender address
+      from: 'noreply@cbtalents.com', // sender address
       to: `${to}`, // list of receivers
       bcc,
       subject, // Subject line
