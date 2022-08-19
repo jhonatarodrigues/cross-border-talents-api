@@ -39,5 +39,6 @@ server
   .start({
     formatError,
     endpoint: '/',
+    playground: process.env.PLAYGROUND,
   })
   .then(() => console.log(`Server is running on http://localhost:4000`));
