@@ -48,5 +48,6 @@ export const Mutation = `
   removeJobs(id: ID!): Boolean
   updateJobs(id: ID!, idInterestSkills: String!, date:String, jobTitle: String!, level: String, country: String, description: String, requirements: String
     benefits: String, recruiter: String): Jobs
-  applyNow(idJob: ID!, name: String!, email: String!, phone: String!): Boolean
+  applyNow(idJob: ID!, name: String!, email: String!, cv: String!): Boolean
+  
 `;

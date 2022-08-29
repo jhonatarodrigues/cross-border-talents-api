@@ -1,9 +1,10 @@
 import { Op } from 'sequelize';
 
+import SendMail from '../functions/sendMail';
 import InterestSkills from '../models/intrestSkills';
+import Jobs from '../models/jobs';
 import Recruiter from '../models/recruiter';
 import Users from '../models/users';
-import Jobs from '../models/jobs';
 
 interface ICreateJobs {
   idInterestSkills: string;
@@ -21,7 +22,7 @@ interface IApplyNow {
   idJob: string;
   name: string;
   email: string;
-  phone: string;
+  cv: string;
 }
 
 interface IUpdateJobs extends ICreateJobs {
@@ -140,7 +141,7 @@ const Mutation = {
       description,
       requirements,
       benefits,
-      recruiter
+      recruiter,
     }: ICreateJobs,
   ) => {
     try {
@@ -153,7 +154,7 @@ const Mutation = {
         date,
         requirements,
         benefits,
-        recruiter
+        recruiter,
       });
 
       return jobs;
@@ -188,7 +189,7 @@ const Mutation = {
       description,
       requirements,
       benefits,
-      recruiter
+      recruiter,
     }: IUpdateJobs,
   ) => {
     try {
@@ -207,7 +208,7 @@ const Mutation = {
         date,
         requirements,
         benefits,
-        recruiter
+        recruiter,
       });
 
       return jobs;
@@ -215,34 +216,30 @@ const Mutation = {
       return error;
     }
   },
-  applyNow: async (_: any, { idJob, name, email, phone }: IApplyNow) => {
-    console.log('aaaa', idJob);
+  applyNow: async (_: any, { idJob, name, email, cv }: IApplyNow) => {
     try {
       const job = await Jobs.findOne({
         where: {
           id: idJob,
         },
       });
-      // console.log('\n\n\n job --', job.);
 
-      // const mail = await SendMail({
-      //   to: 'info@cbtalents.com',
-      //   bcc: 'jhonata.a.r@hotmail.com',
-      //   subject: 'Contact Cross Border Talent - ' + subject,
-      //   text: 'Welcome to Talent Pool',
-      //   html: `
+      const mail = await SendMail({
+        to: 'info@cbtalents.com',
+        bcc: 'jhonata.a.r@hotmail.com',
+        subject: 'Contact Cross Border Talent - ' + name,
+        text: 'Apply Now Job',
+        html: `
+          <h2>Job - ${job?.jobTitle}</h2>
+          <p>Name: ${name}</p>
+          <p>Email: ${email}</p>
+          <p>CV: https://www.cbtalents.com/uploads/${cv}</p>
+      `,
+      });
 
-      // <p>Name: ${name}</p>
-      // <p>Email: ${email}</p>
-      // <p>Message: ${message}</p>
-      // `,
-      // });
-
-      // console.log('\n\n\n\n\n mail', mail);
-
-      // if (mail) {
-      //   return true;
-      // }
+      if (mail) {
+        return true;
+      }
     } catch (error: any) {
       return error;
     }
