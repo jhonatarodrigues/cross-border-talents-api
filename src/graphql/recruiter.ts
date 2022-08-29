@@ -17,7 +17,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  recruiters(idUser: String): [Recruiter]
+  recruiters(idUser: String, alphabeticalOrder: Boolean): [Recruiter]
   recruiter(id: ID): Recruiter
 `;
 

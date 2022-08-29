@@ -18,7 +18,13 @@ interface IUpdateRecruiter extends ICreateRecruiter {
 }
 
 const Query = {
-  recruiters: async (_: any, { idUser }: { idUser: string }) => {
+  recruiters: async (
+    _: any,
+    {
+      idUser,
+      alphabeticalOrder,
+    }: { idUser: string; alphabeticalOrder?: boolean },
+  ) => {
     const recruiter = await Recruiter.findAll({
       include: [
         {
@@ -28,6 +34,7 @@ const Query = {
           where: {
             ...(idUser ? { id: idUser } : {}),
           },
+          order: alphabeticalOrder ? [['name', 'ASC']] : [],
         },
         {
           model: TeamLeader,
@@ -42,7 +49,7 @@ const Query = {
           ],
         },
       ],
-      order: [['id', 'DESC']],
+      order: !alphabeticalOrder ? [['id', 'DESC']] : [],
     });
 
     return recruiter;

@@ -10,7 +10,7 @@ export const TypeDefs: ITypedef = `
 `;
 
 export const Query = `
-  teamLeaders: [TeamLeader!]!
+  teamLeaders(alphabeticalOrder: Boolean): [TeamLeader!]!
   teamLeader(id: ID, idUser: ID): TeamLeader
 `;
 

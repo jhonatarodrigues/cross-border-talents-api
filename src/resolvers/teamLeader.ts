@@ -16,14 +16,18 @@ interface IUpdateUser extends ICreateUser {
 }
 
 const Query = {
-  teamLeaders: async () => {
+  teamLeaders: async (
+    _: any,
+    { alphabeticalOrder }: { alphabeticalOrder?: boolean },
+  ) => {
     const teamLeaders = await TeamLeader.findAll({
-      order: [['id', 'DESC']],
+      order: !alphabeticalOrder ? [['id', 'DESC']] : [],
       include: [
         {
           model: Users,
           required: false,
           as: 'user',
+          order: alphabeticalOrder ? [['name', 'ASC']] : [],
         },
       ],
     });
