@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import Sequelize from 'sequelize';
 
 import Recruiter from '../models/recruiter';
 import TeamLeader from '../models/teamLeader';
@@ -34,7 +35,6 @@ const Query = {
           where: {
             ...(idUser ? { id: idUser } : {}),
           },
-          order: alphabeticalOrder ? [['name', 'ASC']] : [],
         },
         {
           model: TeamLeader,
@@ -49,7 +49,9 @@ const Query = {
           ],
         },
       ],
-      order: !alphabeticalOrder ? [['id', 'DESC']] : [],
+      order: !alphabeticalOrder
+        ? [['id', 'DESC']]
+        : [[Sequelize.literal('user.name'), 'ASC']],
     });
 
     return recruiter;

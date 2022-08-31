@@ -233,7 +233,7 @@ const Mutation = {
           <h2>Job - ${job?.jobTitle}</h2>
           <p>Name: ${name}</p>
           <p>Email: ${email}</p>
-          <p>CV: https://www.cbtalents.com/uploads/${cv}</p>
+          <p>CV: <a href="https://api.cbtalents.com/uploads/${cv}">https://api.cbtalents.com/uploads/${cv}</a></p>
       `,
       });
 

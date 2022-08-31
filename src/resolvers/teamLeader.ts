@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import Sequelize from 'sequelize';
 
 import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
@@ -21,13 +22,14 @@ const Query = {
     { alphabeticalOrder }: { alphabeticalOrder?: boolean },
   ) => {
     const teamLeaders = await TeamLeader.findAll({
-      order: !alphabeticalOrder ? [['id', 'DESC']] : [],
+      order: !alphabeticalOrder
+        ? [['id', 'DESC']]
+        : [[Sequelize.literal('user.name'), 'ASC']],
       include: [
         {
           model: Users,
           required: false,
           as: 'user',
-          order: alphabeticalOrder ? [['name', 'ASC']] : [],
         },
       ],
     });
