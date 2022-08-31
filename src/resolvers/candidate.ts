@@ -309,9 +309,13 @@ const Mutation = {
     }: ICreateCandidate,
   ) => {
     const hashedPassword = await bcrypt.hash('123456', 10);
-    const newBirthDate = Moment(birthDate).format('YYYY-MM-DD');
-    if (birthDate && newBirthDate === 'Invalid date') {
-      return new Error('invalidDate');
+    let newBirthDate = '';
+
+    if (birthDate) {
+      newBirthDate = Moment(birthDate).format('YYYY-MM-DD');
+      if (birthDate && newBirthDate === 'Invalid date') {
+        return new Error('invalidDate');
+      }
     }
 
     try {
@@ -349,7 +353,7 @@ const Mutation = {
           idUser: user.id,
           profilePicture,
           socialMedia,
-          birthDate: newBirthDate,
+          ...(birthDate ? { birthDate: newBirthDate } : {}),
           country,
           gender,
           nativeLanguage,
