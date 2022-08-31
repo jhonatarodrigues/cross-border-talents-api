@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
-import { Op, where } from 'sequelize';
+import Sequelize, { Op, where } from 'sequelize';
 
 import SendMail from '../functions/sendMail';
 import Candidate from '../models/candidate';
@@ -64,14 +64,17 @@ const Query = {
       whereUser = {
         [Op.or]: [
           {
-            name: {
-              [Op.like]: `%${search}%`,
-            },
-          },
-          {
-            lastName: {
-              [Op.like]: `%${search}%`,
-            },
+            namesQuery: Sequelize.where(
+              Sequelize.fn(
+                'concat',
+                Sequelize.col('name'),
+                ' ',
+                Sequelize.col('lastName'),
+              ),
+              {
+                [Sequelize.Op.like]: `%${search}%`,
+              },
+            ),
           },
           {
             email: {
@@ -81,6 +84,8 @@ const Query = {
         ],
       };
     }
+
+    console.log('\n\n\n search', search);
 
     let whereRecruiter = {};
 
