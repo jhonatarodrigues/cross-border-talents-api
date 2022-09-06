@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon",
-    "build": "rimraf ./build && tsc && cp -R ./.env.production ./build/.env",
+    "build": "rimraf ./build && tsc && cp -R ./.env.production ./build/.env && cp -R ./src/assets/ ./build/assets/",
     "migrate": " sequelize db:migrate"
   },
   "dependencies": {
