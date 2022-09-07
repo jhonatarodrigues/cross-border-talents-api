@@ -13,6 +13,7 @@ class Jobs extends Model {
   declare country: string;
   declare description: string;
   declare date: Date;
+  declare recruiter: number;
 }
 
 Jobs.init(

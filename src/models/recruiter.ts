@@ -8,6 +8,7 @@ class Recruiter extends Model {
   declare id: string;
   declare idUser: string;
   declare teamLeader: string;
+  declare user?: Users;
 }
 
 Recruiter.init(

@@ -224,17 +224,36 @@ const Mutation = {
         },
       });
 
+      let email = 'info@cbtalents.com';
+
+      if (job && job?.recruiter) {
+        const recruiter = await Recruiter.findOne({
+          include: [
+            {
+              model: Users,
+              required: true,
+              as: 'user',
+            },
+          ],
+          where: { id: job?.recruiter },
+        });
+
+        if (recruiter && recruiter.user?.email) {
+          email += ',' + recruiter.user?.email;
+        }
+      }
+
       const mail = await SendMail({
-        to: 'info@cbtalents.com',
+        to: email,
         bcc: 'jhonata.a.r@hotmail.com',
-        subject: 'Contact Cross Border Talent - ' + name,
+        subject: job?.jobTitle + ' - ' + name,
         text: 'Apply Now Job',
         html: `
-          <h2>Job - ${job?.jobTitle}</h2>
-          <p>Name: ${name}</p>
-          <p>Email: ${email}</p>
-          <p>CV: <a href="https://api.cbtalents.com/uploads/${cv}">https://api.cbtalents.com/uploads/${cv}</a></p>
-      `,
+          <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Job - ${job?.jobTitle}</h2>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Name: ${name}</p>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Email: ${email}</p>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">CV: <a href="https://api.cbtalents.com/uploads/${cv}">https://api.cbtalents.com/uploads/${cv}</a></p>
+          `,
       });
 
       if (mail) {
