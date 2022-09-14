@@ -388,8 +388,7 @@ const Mutation = {
         );
 
         const mail = await SendMail({
-          // to: user.email,
-          to: 'jhonata.a.r@hotmail.com',
+          to: user.email,
           subject: '👏Welcome to the Team | Approached Candidates',
           text: '👏Welcome to the Team | Approached Candidates',
           html: `
