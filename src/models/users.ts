@@ -5,6 +5,7 @@ import db from '../db';
 class Users extends Model {
   declare id: string;
   declare email: string;
+  declare name: string;
   declare lastName: string;
   declare phone: string;
   declare status: boolean;

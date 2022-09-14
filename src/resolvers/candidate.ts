@@ -10,6 +10,7 @@ import InterestSkills from '../models/intrestSkills';
 import Recruiter from '../models/recruiter';
 import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
+import { GeneratedPassword } from '../util/functions';
 
 interface ICreateCandidate {
   name: string;
@@ -308,7 +309,8 @@ const Mutation = {
       talentPoolVerify,
     }: ICreateCandidate,
   ) => {
-    const hashedPassword = await bcrypt.hash('123456', 10);
+    const generatePassword = GeneratedPassword(8) || '';
+    const hashedPassword = await bcrypt.hash(generatePassword, 10);
     let newBirthDate = '';
 
     if (birthDate) {
@@ -386,17 +388,33 @@ const Mutation = {
         );
 
         const mail = await SendMail({
-          to: user.email,
-          subject: 'Welcome to Talent Pool',
-          text: 'Welcome to Talent Pool',
+          // to: user.email,
+          to: 'jhonata.a.r@hotmail.com',
+          subject: '👏Welcome to the Team | Approached Candidates',
+          text: '👏Welcome to the Team | Approached Candidates',
           html: `
-          <h1>Welcome to Talent Pool</h1>
-          <p>
-          to register in the talent pool, access the link
+          
+
+          <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello ${user.name} ${user.lastName},</h2>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">After this step, you are part of our amazing team of international recruiters. To enter the Approached Candidates, you just need to follow the steps below:</p>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">How to start</p>
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">1. Enter the DataBase here [insert link]\n
+          Login using your cbt email address\n
+          Your password is <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 25px; font-weight: bold;">${generatePassword}</p>
           </p>
-          <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
-          http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
-          </a>
+
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">2. Change your password\n
+          You can follow the steps here.</p>
+
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">3. Start registering your candidates\n
+          You can follow the steps here.</p>
+
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
+            <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
+            http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
+            </a>
+          </p>
+
           `,
         });
 
