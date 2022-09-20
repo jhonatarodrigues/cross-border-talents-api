@@ -6,6 +6,7 @@ export interface ISendMail {
   text: string;
   html: string;
   bcc?: string;
+  cc?: string;
   template?: boolean;
 }
 
@@ -15,6 +16,7 @@ export default async function SendMail({
   text,
   html,
   bcc,
+  cc,
   template = true,
 }: ISendMail) {
   try {
@@ -56,6 +58,7 @@ export default async function SendMail({
     const info = await transporter.sendMail({
       from: 'noreply@cbtalents.com', // sender address
       to: `${to}`, // list of receivers
+      cc,
       bcc,
       subject, // Subject line
       text, // plain text body

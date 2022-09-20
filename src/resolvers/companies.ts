@@ -223,15 +223,15 @@ const Mutation = {
           subject: 'New companie',
           text: '',
           html: `
-              <h1>Have New company awaiting for your approval</h1>
-              <p>
+              <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Have New company awaiting for your approval</h2>
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
                Company Name: ${companyName}
                Name: ${name},
                Last Name: ${lastName},
                Email: ${email},
                Phone: ${phone},
               </p>
-              <p>Acesse o link para ativar.</p>
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Acesse o link para ativar.</p>
 
               <a href="http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}">
                 http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}
@@ -240,7 +240,21 @@ const Mutation = {
         `,
         });
 
-        console.log('send mail', mail);
+        const mailUser = await SendMail({
+          to: email,
+          subject: '🚀Talent Pool for Companies | Registration',
+          cc: 'ricardo.nobre@cbtalents.com, backup@cbtalents.com',
+          text: '',
+          html: `
+          <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello,</h2>
+
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">The information entered in your account profile has been saved. Your profile may be subject to a security check and will still require final validation by our team.</p>
+          
+          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Please note: This step does not yet confirm your accreditation to our Talent Pool. Please, wait until you receive confirmation from our team.</p>
+        `,
+        });
+
+        console.log('send mail', mail, mailUser);
       }
 
       return { user: user, companie: companieAdd };
