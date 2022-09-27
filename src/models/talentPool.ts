@@ -17,6 +17,7 @@ class TalentPool extends Model {
   declare experience: string;
   declare languages: string;
   declare status: boolean;
+  declare user: Users;
 }
 
 TalentPool.init(
