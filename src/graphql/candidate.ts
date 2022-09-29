@@ -101,4 +101,7 @@ export const Mutation = `
     idInterestSkills: String!,
     talentPoolVerify: Boolean,
   ): ReturnCandidate
+
+
+  importCandidateFromCSV: String
 `;

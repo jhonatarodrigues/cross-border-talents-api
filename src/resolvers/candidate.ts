@@ -1,4 +1,7 @@
 import bcrypt from 'bcryptjs';
+// --
+import csv from 'csv-parser';
+import fs from 'fs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
@@ -10,7 +13,7 @@ import InterestSkills from '../models/intrestSkills';
 import Recruiter from '../models/recruiter';
 import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
-import { GeneratedPassword } from '../util/functions';
+import { CheckMail, GeneratedPassword } from '../util/functions';
 
 interface ICreateCandidate {
   name: string;
@@ -151,7 +154,7 @@ const Query = {
       order: [['id', 'DESC']],
       where: {
         ...(department ? { idInterestSkills: department } : {}),
-        ...(candidate ? { id: candidate } : {}),
+        ...(candidate ? { idUser: candidate } : {}),
 
         ...whereRecruiter,
         ...whereTeamLeader,
@@ -621,6 +624,105 @@ const Mutation = {
     } catch (error) {
       return error;
     }
+  },
+
+  importCandidateFromCSV: async () => {
+    const results: any = [];
+    let error = 0;
+    let success = 0;
+    let total = 0;
+    let registered = 0;
+    let notMail = 0;
+
+    await fs
+      .createReadStream('src/data/candidates-2021.csv')
+      .pipe(
+        csv({
+          separator: ';',
+        }),
+      )
+      .on('data', (data: any) => results.push(data))
+      .on('end', async () => {
+        for (const candidate of results) {
+          const observations = candidate.Observations;
+          const splitObservations = observations.split(' ');
+          let email = '';
+
+          splitObservations.forEach((observation: string) => {
+            if (!email && CheckMail(observation) === true) {
+              email = observation;
+            }
+          });
+
+          if (email) {
+            const generatePassword = GeneratedPassword(8) || '';
+            const hashedPassword = await bcrypt.hash(generatePassword, 10);
+
+            const checkUser = await Users.findOne({
+              where: { email },
+            });
+            if (!checkUser) {
+              const user = await Users.create({
+                name: candidate.Name,
+                email,
+                status: 1,
+                accessLevel: 5,
+                password: hashedPassword,
+              });
+
+              if (!user.id) {
+                error++;
+              }
+
+              let candidateAdd = null;
+              try {
+                candidateAdd = await Candidate.create({
+                  idUser: user.id,
+
+                  observations: candidate.Observations,
+
+                  country: '',
+                  profilePicture: '',
+                  socialMedia: '',
+                  gender: '',
+                  nativeLanguage: '',
+                  allowTalentPool: false,
+                  allowContactMe: false,
+                  privacityPolicy: true,
+                  englishLevel: '',
+                  talentPoolVerify: false,
+                });
+
+                success++;
+              } catch {
+                user.destroy();
+                error++;
+              }
+            } else {
+              registered++;
+            }
+          } else {
+            notMail++;
+          }
+          total++;
+        }
+
+        console.log('\n\n\n\n\n --- end ---- \n\n\n', {
+          Success: success,
+          Error: error,
+          Total: total,
+          Registered: registered,
+          'Not Mail': notMail,
+        });
+      });
+
+    return `
+      Success: ${success}\n
+      Error: ${error}\n
+      Total: ${total}\n
+      Registered: ${registered}\n
+      Not Mail: ${notMail}\n    
+    `;
   },
 };
 
