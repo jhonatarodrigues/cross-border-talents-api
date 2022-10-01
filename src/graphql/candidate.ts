@@ -4,7 +4,7 @@ export const TypeDefs: ITypedef = `
   type Candidate {
     id: ID!
     idUser: ID!
-    idInterestSkills: ID!
+    idInterestSkills: ID
 
     profilePicture: String
     socialMedia: String

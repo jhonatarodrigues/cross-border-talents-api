@@ -39,7 +39,10 @@ Candidate.init(
       allowNull: true,
     },
     idUser: Sequelize.INTEGER,
-    idInterestSkills: Sequelize.INTEGER,
+    idInterestSkills: {
+      type: Sequelize.INTEGER,
+      allowNull: true,
+    },
 
     profilePicture: Sequelize.STRING,
     socialMedia: Sequelize.STRING,
