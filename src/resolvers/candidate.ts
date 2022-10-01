@@ -1,10 +1,12 @@
 import bcrypt from 'bcryptjs';
 // --
 import csv from 'csv-parser';
+import { createObjectCsvWriter } from 'csv-writer';
 import fs from 'fs';
 import { ContextParameters } from 'graphql-yoga/dist/types';
 import jsonwebtoken from 'jsonwebtoken';
 import Moment from 'moment';
+import { userInfo } from 'os';
 import Sequelize, { Op, where } from 'sequelize';
 
 import SendMail from '../functions/sendMail';
@@ -159,6 +161,7 @@ const Query = {
         ...whereRecruiter,
         ...whereTeamLeader,
       },
+      limit: 1000,
     });
 
     return db;
@@ -633,9 +636,23 @@ const Mutation = {
     let total = 0;
     let registered = 0;
     let notMail = 0;
+    const fileName = '2022.csv';
+
+    const createCSV = createObjectCsvWriter;
+
+    const csvWrited = createCSV({
+      path: 'src/data/error-' + fileName,
+      header: [
+        { id: 'name', title: 'NAME' },
+        { id: 'observations', title: 'OBSERVATIONS' },
+        { id: 'user', title: 'USER' },
+      ],
+    });
+
+    const records: any[] = [];
 
     await fs
-      .createReadStream('src/data/candidates-2021.csv')
+      .createReadStream('src/data/' + fileName)
       .pipe(
         csv({
           separator: ';',
@@ -645,14 +662,20 @@ const Mutation = {
       .on('end', async () => {
         for (const candidate of results) {
           const observations = candidate.Observations;
-          const splitObservations = observations.split(' ');
+          const splitObservations =
+            observations && observations.indexOf('') > -1
+              ? observations.split(' ')
+              : [];
+
           let email = '';
 
-          splitObservations.forEach((observation: string) => {
-            if (!email && CheckMail(observation) === true) {
-              email = observation;
-            }
-          });
+          if (splitObservations && splitObservations.length > 0) {
+            splitObservations.forEach((observation: string) => {
+              if (!email && CheckMail(observation) === true) {
+                email = observation;
+              }
+            });
+          }
 
           if (email) {
             const generatePassword = GeneratedPassword(8) || '';
@@ -702,10 +725,24 @@ const Mutation = {
               registered++;
             }
           } else {
+            const item = {
+              name: candidate.Name,
+              observations: candidate.Observations,
+              user: candidate.User,
+            };
+
+            records.push(item);
+
             notMail++;
           }
           total++;
         }
+
+        csvWrited
+          .writeRecords(records) // returns a promise
+          .then(() => {
+            console.log('...Done');
+          });
 
         console.log('\n\n\n\n\n --- end ---- \n\n\n', {
           Success: success,
