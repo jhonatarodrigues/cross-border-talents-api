@@ -2,9 +2,11 @@ import { ContextParameters } from 'graphql-yoga/dist/types';
 import jwt from 'jsonwebtoken';
 
 import SendMail from '../functions/sendMail';
+import Candidate from '../models/candidate';
 import Companies from '../models/companies';
 import TalentPool from '../models/talentPool';
 import TalentPoolInterest from '../models/talentPoolInterest';
+import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
 
 interface ITalentPoolInterest {
@@ -65,16 +67,18 @@ const Mutation = {
         });
         const talentPool = await TalentPool.findOne({
           where: { id: idTalentPool },
-          include: [
-            {
-              model: Users,
-              required: false,
-              as: 'user',
-            },
-          ],
         });
+
+        const candidate = await Candidate.findOne({
+          where: { id: talentPool?.idCandidate },
+        });
+
+        const userIdTeamLeader = await TeamLeader.findOne({
+          where: { id: candidate?.teamLeader },
+        });
+
         const teamLeaderUser = await Users.findOne({
-          where: { id: talentPool?.idTeamLeader },
+          where: { id: userIdTeamLeader?.idUser },
         });
 
         if (user?.email) {
@@ -86,7 +90,7 @@ const Mutation = {
             html: `
 
 
-              <p style="font-family: Ari              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Hello,</p>
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Hello,</p>
               <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">This is a request from ${company?.companyName} ${company?.companyName}, sent via the Approached Candidates.</p>
               <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">This company would like to interview/hire the candidate #${talentPool?.user.id} ${talentPool?.user.email}.</p>
               <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">To accept this request, click in the button below:</p>

@@ -10,6 +10,7 @@ class Candidate extends Model {
   declare id: string;
   declare idUser: string;
   declare idInterestSkills: string;
+  declare teamLeader: string;
 
   declare profilePicture: string;
   declare socialMedia: string;

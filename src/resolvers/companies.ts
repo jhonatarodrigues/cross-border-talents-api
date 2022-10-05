@@ -218,8 +218,9 @@ const Mutation = {
           return item;
         });
 
+        const emailsNewCompanie = emails.join(',');
         const mail = await SendMail({
-          to: emails.toString(),
+          to: emailsNewCompanie,
           subject: 'New companie',
           text: '',
           html: `

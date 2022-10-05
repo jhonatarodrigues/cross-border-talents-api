@@ -23,6 +23,7 @@ export const TypeDefs: ITypedef = `
     createdAt: String
     updatedAt: String
 
+    teamLeader: ID
     userRecruiter: Recruiter
     userTeamLeader: TeamLeader
     user: User

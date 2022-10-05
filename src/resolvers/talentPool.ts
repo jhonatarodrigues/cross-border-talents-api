@@ -102,6 +102,20 @@ const Query = {
           model: Candidate,
           required: true,
           as: 'candidate',
+          include: [
+            {
+              model: TeamLeader,
+              required: false,
+              as: 'userTeamLeader',
+              include: [
+                {
+                  model: Users,
+                  required: false,
+                  as: 'user',
+                },
+              ],
+            },
+          ],
           where: {
             [Op.and]: [
               {
@@ -218,10 +232,6 @@ const Mutation = {
         return;
       }
 
-      const { id } = jwt.verify(token, String(process.env.JWT_SECRET)) as {
-        id: string;
-      };
-
       let dataTratada = data;
       if (!data) {
         dataTratada = Moment(new Date()).format('YYYY-MM-DD');
@@ -244,7 +254,7 @@ const Mutation = {
         const talentPoolCreate = await TalentPool.create({
           idCandidate,
           idUser,
-          idTeamLeader: id,
+          // idTeamLeader: id,
           data: dataTratada,
           profile,
           observation,
@@ -255,7 +265,6 @@ const Mutation = {
           status,
           charge,
         });
-
         return talentPoolCreate;
       }
     } catch (error) {
