@@ -78,7 +78,7 @@ const Query = {
                 Sequelize.col('lastName'),
               ),
               {
-                [Sequelize.Op.like]: `%${search}%`,
+                [Sequelize.Op.like]: `%${search.replace(' ', '%')}%`,
               },
             ),
           },
