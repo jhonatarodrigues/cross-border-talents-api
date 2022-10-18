@@ -50,6 +50,13 @@ export default async function SendMail({
         <div style="background-image:url('https://api.cbtalents.com/assets/newsLetter/img9.jpg'); left:0px; top:1430px; width:900px; height:2px"></div>
         <div style="background-image:url('https://api.cbtalents.com/assets/newsLetter/img10.jpg'); left:0px; top:1432px; width:900px; height:96px"></div>
         <div style="background-image:url('https://api.cbtalents.com/assets/newsLetter/img11.jpg'); left:0px; top:1528px; width:900px; height:147px"></div>
+        <div>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 18px;">This message was sent automatically.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 18px;">Please do not reply to this address.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 18px;">You can contact us through the online form.</p>
+        <a href="https://cbtalents.com/"><p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 18px;">Cross Border Talents</p></a>
+
+        </div>
         </body>
         </html>
       `;

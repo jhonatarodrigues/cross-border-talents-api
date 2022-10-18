@@ -314,6 +314,7 @@ const Mutation = {
       idInterestSkills,
       talentPoolVerify,
     }: ICreateCandidate,
+    { request }: ContextParameters,
   ) => {
     const generatePassword = GeneratedPassword(8) || '';
     const hashedPassword = await bcrypt.hash(generatePassword, 10);
@@ -344,7 +345,7 @@ const Mutation = {
       const user = await Users.create({
         name,
         lastName,
-        email,
+        email: email,
         phone,
         status,
         accessLevel: 5,
@@ -386,44 +387,164 @@ const Mutation = {
         throw new Error('candidateNotCreate');
       }
 
-      if (allowTalentPool && user.id && candidateAdd.id) {
+      const tokenBearer =
+        request.get('Authorization')?.replace('Bearer ', '') || '';
+
+      const { id, accessLevel } = jsonwebtoken.verify(
+        tokenBearer,
+        String(process.env.JWT_SECRET),
+      ) as { id: string; accessLevel: number };
+
+      if (
+        user.id &&
+        candidateAdd.id &&
+        (accessLevel === 2 || accessLevel === 3)
+      ) {
         const token = await jsonwebtoken.sign(
           { id: user.id, email: user.email, idCandidate: candidateAdd.id },
           String(process.env.JWT_SECRET),
           { expiresIn: '7d' },
         );
 
+        const em01 = `
+        <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello ${user.name} ${user.lastName},</h2>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">You recently created an account for our website to follow the job opportunities we have.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Please note that creating an account does not guarantee applications for job openings. Each job application must be done by the candidate on our website.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Your registration may be subject to a check and will still require final validation by our team.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Best regards,</p>
+        `;
+
         const mail = await SendMail({
           to: user.email,
-          subject: '👏Welcome to the Team | Approached Candidates',
-          text: '👏Welcome to the Team | Approached Candidates',
-          html: `
-          
-
-          <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello ${user.name} ${user.lastName},</h2>
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">After this step, you are part of our amazing team of international recruiters. To enter the Approached Candidates, you just need to follow the steps below:</p>
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">How to start</p>
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">1. Enter the DataBase here [insert link]\n
-          Login using your cbt email address\n
-          Your password is <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 25px; font-weight: bold;">${generatePassword}</p>
-          </p>
-
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">2. Change your password\n
-          You can follow the steps here.</p>
-
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">3. Start registering your candidates\n
-          You can follow the steps here.</p>
-
-          <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
-            <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
-            http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
-            </a>
-          </p>
-
-          `,
+          cc: 'backup@cbtalents.com, info@cbtalents.com',
+          subject: '📬 Cross Border Talents | Registration to our database',
+          text: '📬 Cross Border Talents | Registration to our database',
+          html: em01,
         });
 
+        // if(allowTalentPool) {
+
+        // }
+
+        // const mail = await SendMail({
+        //   to: user.email,
+        //   subject: '👏Welcome to the Team | Approached Candidates',
+        //   text: '👏Welcome to the Team | Approached Candidates',
+        //   html: `
+
+        //   <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello ${user.name} ${user.lastName},</h2>
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">After this step, you are part of our amazing team of international recruiters. To enter the Approached Candidates, you just need to follow the steps below:</p>
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">How to start</p>
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">1. Enter the DataBase here [insert link]\n
+        //   Login using your cbt email address\n
+        //   Your password is <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 25px; font-weight: bold;">${generatePassword}</p>
+        //   </p>
+
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">2. Change your password\n
+        //   You can follow the steps here.</p>
+
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">3. Start registering your candidates\n
+        //   You can follow the steps here.</p>
+
+        //   <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
+        //     <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
+        //     http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
+        //     </a>
+        //   </p>
+
+        //   `,
+        // });
+
         console.log('\n\n\n\n\n mail', mail, token);
+      }
+
+      if (
+        (accessLevel === 2 || accessLevel === 3) &&
+        user.id &&
+        candidateAdd.id
+      ) {
+        const userTeamLeader = await Users.findOne({
+          where: { id: id },
+        });
+
+        const em05 = `
+        Hello ${userTeamLeader?.name} ${userTeamLeader?.lastName},
+ 
+        This is an email confirmation sent via the Approached Candidates.
+        The following candidate was successfully added to our Approached Candidates under your username:
+        Name: ${name}
+        Last name: ${lastName}
+        Email: ${email}
+        
+        
+        Best regards,
+        Cross Border Talents
+         
+        
+        `;
+
+        if (userTeamLeader && userTeamLeader?.email) {
+          const mail3 = await SendMail({
+            to: userTeamLeader?.email,
+            cc: `backup@cbtalents.com`,
+            subject: '🟢 Approached candidate | success',
+            text: '🟢 Approached candidate | success',
+            html: em05,
+          });
+
+          console.log('mail3 --', mail3);
+        }
+      }
+
+      if ((accessLevel === 2 || accessLevel === 3) && allowTalentPool) {
+        const token = await jsonwebtoken.sign(
+          { id: user.id, email: user.email, idCandidate: candidateAdd.id },
+          String(process.env.JWT_SECRET),
+          { expiresIn: '7d' },
+        );
+
+        const em03 = `
+        
+        <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello ${user.name} ${user.lastName},</h2>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">You were recently chosen by our team of international recruiters to join our Talent Pool, and no further action is required.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Please keep in mind that this action does not make use of any of your personal information. CBTalents Talent Pool abides by <a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR regulations</a>, and your personal information remains yours.</p>
+
+          <br />
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">What are the benefits?</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">• Companies receive no personal information (Blind CVs)</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">• Companies may hire you based on your professional abilities</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">• You you be listed as a Top Candidate </p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">• Our international recruiters will be present at all stages of the recruitment process.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">• Companies can select anyone regardless of gender, race, and other diversity groups</p>
+        <br />
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">⚠️ Please keep in mind that this action does not guarantee job applications.</p>
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">⚠️<a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR rules</a> & <a href="https://blog-cbtalents-com.cloud3.cloubox.com.br/privacy-policy/">Privacy Policy</a></p>
+        <br />
+        <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Best regards,</p>
+          
+
+           <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
+            <a href="http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}">
+            http://cbtalents-com.cloud3.cloubox.com.br/registerTalentPool/${token}
+             </a>
+           </p>
+
+        `;
+
+        const userTeamLeader = await Users.findOne({
+          where: { id: id },
+        });
+
+        const mail2 = await SendMail({
+          to: user.email,
+          cc: `info@cbtalents.com,backup@cbtalents.com,${userTeamLeader?.email}`,
+          subject:
+            '✨Congratulations you are a Top candidate | CBT Talent Pool',
+          text: '✨Congratulations you are a Top candidate | CBT Talent Pool',
+          html: em03,
+        });
+
+        console.log('mail2 --', mail2);
       }
 
       return { user: user, candidate: candidateAdd };
