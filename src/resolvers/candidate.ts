@@ -97,25 +97,73 @@ const Query = {
 
     if (recruiter) {
       whereRecruiter = {
-        [Op.or]: [{ recruiter: recruiter }, { recruiter: null }],
+        // [Op.or]: [{ recruiter: recruiter }, { recruiter: null }],
+        [Op.or]: [{ recruiter: recruiter }],
       };
     }
-    if (!recruiter && !search) {
-      whereRecruiter = { recruiter: null };
-    }
+    // if (!recruiter && !search) {
+    //   whereRecruiter = { recruiter: null };
+    // }
 
     let whereTeamLeader = {};
 
     if (teamLeader) {
       whereTeamLeader = {
-        [Op.or]: [{ teamLeader: teamLeader }, { teamLeader: null }],
+        // [Op.or]: [{ teamLeader: teamLeader }, { teamLeader: null }],
+        [Op.or]: [{ teamLeader: teamLeader }],
       };
     }
-    if (!teamLeader && !search) {
-      whereTeamLeader = { teamLeader: null };
-    }
+    // if (!teamLeader && !search) {
+    //   whereTeamLeader = { teamLeader: null };
+    // }
 
     const db = await Candidate.findAll({
+      include: [
+        {
+          model: Users,
+          required: true,
+          as: 'user',
+          where: whereUser,
+        },
+        {
+          model: TeamLeader,
+          required: false,
+          as: 'userTeamLeader',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: Recruiter,
+          required: false,
+          as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: InterestSkills,
+          required: false,
+          as: 'interestSkills',
+        },
+      ],
+      order: [['id', 'DESC']],
+      where: {
+        recruiter: null,
+        teamLeader: null,
+      },
+      limit: 10,
+    });
+
+    const db2 = await Candidate.findAll({
       include: [
         {
           model: Users,
@@ -161,10 +209,10 @@ const Query = {
         ...whereRecruiter,
         ...whereTeamLeader,
       },
-      limit: 1000,
+      limit: 990,
     });
 
-    return db;
+    return [...db, ...db2];
   },
   candidate: (_: any, { id }: { id: string }) => {
     if (!id) {
