@@ -4,6 +4,7 @@ import SendMail from '../functions/sendMail';
 import InterestSkills from '../models/intrestSkills';
 import Jobs from '../models/jobs';
 import Recruiter from '../models/recruiter';
+import TeamLeader from '../models/teamLeader';
 import Users from '../models/users';
 
 interface ICreateJobs {
@@ -16,6 +17,7 @@ interface ICreateJobs {
   requirements: string;
   benefits: string;
   recruiter: string;
+  teamLeader: string;
 }
 
 interface IApplyNow {
@@ -43,6 +45,18 @@ const Query = {
           model: Recruiter,
           required: false,
           as: 'userRecruiter',
+          include: [
+            {
+              model: Users,
+              required: false,
+              as: 'user',
+            },
+          ],
+        },
+        {
+          model: TeamLeader,
+          required: false,
+          as: 'userTeamLeader',
           include: [
             {
               model: Users,
@@ -142,6 +156,7 @@ const Mutation = {
       requirements,
       benefits,
       recruiter,
+      teamLeader,
     }: ICreateJobs,
   ) => {
     try {
@@ -154,7 +169,8 @@ const Mutation = {
         date,
         requirements,
         benefits,
-        recruiter,
+        ...(recruiter ? { recruiter } : {}),
+        ...(teamLeader ? { teamLeader } : {}),
       });
 
       return jobs;
@@ -190,6 +206,7 @@ const Mutation = {
       requirements,
       benefits,
       recruiter,
+      teamLeader,
     }: IUpdateJobs,
   ) => {
     try {
@@ -198,6 +215,8 @@ const Mutation = {
       if (!jobsUpdate) {
         throw new Error('jobNotFound');
       }
+
+      console.log('aaa --', teamLeader);
 
       const jobs = await jobsUpdate.update({
         idInterestSkills,
@@ -208,7 +227,8 @@ const Mutation = {
         date,
         requirements,
         benefits,
-        recruiter,
+        ...(recruiter ? { recruiter } : {}),
+        ...(teamLeader ? { teamLeader } : {}),
       });
 
       return jobs;

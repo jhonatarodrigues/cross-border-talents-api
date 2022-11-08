@@ -3,6 +3,7 @@ import Sequelize, { Model } from 'sequelize';
 import db from '../db';
 import InterestSkills from './intrestSkills';
 import Recruiter from './recruiter';
+import TeamLeader from './teamLeader';
 
 class Jobs extends Model {
   declare id: string;
@@ -48,6 +49,10 @@ Jobs.init(
 Jobs.belongsTo(Recruiter, {
   foreignKey: 'recruiter',
   as: 'userRecruiter',
+});
+Jobs.belongsTo(TeamLeader, {
+  foreignKey: 'teamLeader',
+  as: 'userTeamLeader',
 });
 Jobs.belongsTo(InterestSkills, {
   foreignKey: 'idInterestSkills',
