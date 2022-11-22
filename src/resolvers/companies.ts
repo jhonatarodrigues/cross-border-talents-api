@@ -224,7 +224,9 @@ const Mutation = {
           subject: 'New companie',
           text: '',
           html: `
-              <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Have New company awaiting for your approval</h2>
+              <h2 style="font-family: Arial, Helvetica, sans-serif; color: #212F53; font-size: 48px;">Hello,</h2>
+
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">A new company is waiting for your approval</p>
               <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">
                Company Name: ${companyName}
                Name: ${name},
@@ -232,7 +234,7 @@ const Mutation = {
                Email: ${email},
                Phone: ${phone},
               </p>
-              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">Acesse o link para ativar.</p>
+              <p style="font-family: Arial, Helvetica, sans-serif; color: #808080; font-size: 22px;">To accept this request, click in the button below:</p>
 
               <a href="http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}">
                 http://cbtalents-com.cloud3.cloubox.com.br/AcceptBusiness/${token}
