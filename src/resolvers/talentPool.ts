@@ -94,7 +94,7 @@ const Query = {
                 ],
               }
             : {},
-          teamLeader ? { idTeamLeader: teamLeader } : {},
+          // teamLeader ? { idTeamLeader: teamLeader } : {},
         ],
       },
       include: [
@@ -105,7 +105,7 @@ const Query = {
           include: [
             {
               model: TeamLeader,
-              required: false,
+              required: teamLeader ? true : false,
               as: 'userTeamLeader',
               include: [
                 {
@@ -114,6 +114,9 @@ const Query = {
                   as: 'user',
                 },
               ],
+              where: {
+                [Op.and]: [teamLeader ? { id: teamLeader } : {}],
+              },
             },
           ],
           where: {
