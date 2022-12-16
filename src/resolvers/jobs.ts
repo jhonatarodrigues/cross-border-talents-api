@@ -265,7 +265,6 @@ const Mutation = {
 
       const mail = await SendMail({
         to: email,
-        bcc: 'jhonata.a.r@hotmail.com',
         subject: job?.jobTitle + ' - ' + name,
         text: 'Apply Now Job',
         html: `
